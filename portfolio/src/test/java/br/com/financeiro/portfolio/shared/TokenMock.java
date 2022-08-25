@@ -1,4 +1,4 @@
-package br.com.financeiro.portfolio.shared.util;
+package br.com.financeiro.portfolio.shared;
 
 public class TokenMock {
 

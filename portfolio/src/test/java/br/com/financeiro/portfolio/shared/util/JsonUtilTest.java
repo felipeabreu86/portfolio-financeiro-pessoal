@@ -10,6 +10,8 @@ import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
 
+import br.com.financeiro.portfolio.shared.TokenMock;
+
 class JsonUtilTest {
 
     private static final String jsonValido1 = "{\"access_token\":\"123456\",\"token_type\":\"Bearer\"}";

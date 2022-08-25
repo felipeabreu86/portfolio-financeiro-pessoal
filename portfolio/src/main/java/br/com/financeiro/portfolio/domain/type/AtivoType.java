@@ -19,6 +19,16 @@ public enum AtivoType {
             }
             return ticker;
         }
+
+        @Override
+        public boolean isB3() {
+            return true;
+        }
+
+        @Override
+        public boolean isInvestimentoExterior() {
+            return false;
+        }
     },
     FUNDO_IMOBILIARIO {
         @Override
@@ -32,6 +42,16 @@ public enum AtivoType {
                 throw new IllegalArgumentException("Formato inválido para o código do Fundo Imobiliário: " + ticker);
             }
             return ticker;
+        }
+
+        @Override
+        public boolean isB3() {
+            return true;
+        }
+
+        @Override
+        public boolean isInvestimentoExterior() {
+            return false;
         }
     },
     STOCK {
@@ -47,6 +67,16 @@ public enum AtivoType {
             }
             return ticker;
         }
+
+        @Override
+        public boolean isB3() {
+            return false;
+        }
+
+        @Override
+        public boolean isInvestimentoExterior() {
+            return true;
+        }
     },
     REIT {
         @Override
@@ -61,10 +91,24 @@ public enum AtivoType {
             }
             return ticker;
         }
+
+        @Override
+        public boolean isB3() {
+            return false;
+        }
+
+        @Override
+        public boolean isInvestimentoExterior() {
+            return true;
+        }
     };
 
     public abstract Ativo obterInstancia(String ticker);
 
     public abstract String validar(String ticker);
+
+    public abstract boolean isB3();
+
+    public abstract boolean isInvestimentoExterior();
 
 }

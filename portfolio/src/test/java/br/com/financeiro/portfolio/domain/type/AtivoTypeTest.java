@@ -1,17 +1,19 @@
 package br.com.financeiro.portfolio.domain.type;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
 import br.com.financeiro.portfolio.domain.AtivoTestUtil;
 import br.com.financeiro.portfolio.domain.entity.Ativo;
 
-class AtivoTypeTest {
+public class AtivoTypeTest {
 
     @Test
-    void testarCriarUmTipoAcao() {
+    public void testarCriarUmTipoAcao() {
         // Arrange
         AtivoType acao = AtivoType.ACAO;
 
@@ -20,16 +22,16 @@ class AtivoTypeTest {
         Ativo ativo2 = acao.obterInstancia("ABCD11");
 
         // Assert
-        assertEquals(true, ativo instanceof Ativo);
+        assertTrue(ativo instanceof Ativo);
         assertEquals("ABCD4", ativo.getCodigoAtivo());
         assertEquals(AtivoType.ACAO, ativo.getTipoAtivo());
-        assertEquals(true, ativo2 instanceof Ativo);
+        assertTrue(ativo2 instanceof Ativo);
         assertEquals("ABCD11", ativo2.getCodigoAtivo());
         assertEquals(AtivoType.ACAO, ativo2.getTipoAtivo());
     }
 
     @Test
-    void testarCriarUmTipoFundoImobiliario() {
+    public void testarCriarUmTipoFundoImobiliario() {
         // Arrange
         AtivoType fundoImobiliario = AtivoType.FUNDO_IMOBILIARIO;
 
@@ -37,13 +39,13 @@ class AtivoTypeTest {
         Ativo ativo = fundoImobiliario.obterInstancia("ABCD11");
 
         // Assert
-        assertEquals(true, ativo instanceof Ativo);
+        assertTrue(ativo instanceof Ativo);
         assertEquals("ABCD11", ativo.getCodigoAtivo());
         assertEquals(AtivoType.FUNDO_IMOBILIARIO, ativo.getTipoAtivo());
     }
 
     @Test
-    void testarCriarUmTipoStock() {
+    public void testarCriarUmTipoStock() {
         // Arrange
         AtivoType stock = AtivoType.STOCK;
 
@@ -51,13 +53,13 @@ class AtivoTypeTest {
         Ativo ativo = stock.obterInstancia("ABCD");
 
         // Assert
-        assertEquals(true, ativo instanceof Ativo);
+        assertTrue(ativo instanceof Ativo);
         assertEquals("ABCD", ativo.getCodigoAtivo());
         assertEquals(AtivoType.STOCK, ativo.getTipoAtivo());
     }
 
     @Test
-    void testarCriarUmTipoReit() {
+    public void testarCriarUmTipoReit() {
         // Arrange
         AtivoType reit = AtivoType.REIT;
 
@@ -65,13 +67,13 @@ class AtivoTypeTest {
         Ativo ativo = reit.obterInstancia("ABC");
 
         // Assert
-        assertEquals(true, ativo instanceof Ativo);
+        assertTrue(ativo instanceof Ativo);
         assertEquals("ABC", ativo.getCodigoAtivo());
         assertEquals(AtivoType.REIT, ativo.getTipoAtivo());
     }
 
     @Test
-    void testarCriarUmTipoInvalidoDeStock() {
+    public void testarCriarUmTipoInvalidoDeStock() {
         // Arrange
         AtivoType asset = AtivoType.STOCK;
 
@@ -99,7 +101,7 @@ class AtivoTypeTest {
     }
 
     @Test
-    void testarCriarUmTipoInvalidoDeReit() {
+    public void testarCriarUmTipoInvalidoDeReit() {
         // Arrange
         AtivoType asset = AtivoType.REIT;
 
@@ -127,7 +129,7 @@ class AtivoTypeTest {
     }
 
     @Test
-    void testarCriarUmTipoInvalidoDeAcao() {
+    public void testarCriarUmTipoInvalidoDeAcao() {
         // Arrange
         AtivoType asset = AtivoType.ACAO;
 
@@ -155,7 +157,7 @@ class AtivoTypeTest {
     }
 
     @Test
-    void testarCriarUmTipoInvalidoDeFundoImobiliario() {
+    public void testarCriarUmTipoInvalidoDeFundoImobiliario() {
         // Arrange
         AtivoType asset = AtivoType.FUNDO_IMOBILIARIO;
 
@@ -183,7 +185,7 @@ class AtivoTypeTest {
     }
 
     @Test
-    void testarValidacaoDeAtivosComCodigoDoAtivoNulo() {
+    public void testarValidacaoDeAtivosComCodigoDoAtivoNulo() {
         // Arrange
         AtivoType asset = AtivoType.STOCK;
         AtivoType asset2 = AtivoType.REIT;
@@ -208,7 +210,7 @@ class AtivoTypeTest {
     }
 
     @Test
-    void testarValidacaoDeAtivosComCodigoDoAtivoInvalido() {
+    public void testarValidacaoDeAtivosComCodigoDoAtivoInvalido() {
         // Arrange
         AtivoType stock = AtivoType.STOCK;
         AtivoType reit = AtivoType.REIT;
@@ -232,7 +234,7 @@ class AtivoTypeTest {
     }
 
     @Test
-    void testarValidacaoDeAtivosComCodigoDoAtivoValido() {
+    public void testarValidacaoDeAtivosComCodigoDoAtivoValido() {
         // Arrange
         AtivoType asset = AtivoType.STOCK;
         AtivoType asset2 = AtivoType.REIT;
@@ -250,6 +252,44 @@ class AtivoTypeTest {
         assertEquals("ABC", result2);
         assertEquals("ABCD3", result3);
         assertEquals("ABCD11", result4);
+    }
+
+    @Test
+    public void testarTipoDeAtivoB3() {
+        // Arrange
+        AtivoType acao = AtivoType.ACAO;
+        AtivoType fii = AtivoType.FUNDO_IMOBILIARIO;
+
+        // Act
+        boolean result1 = acao.isB3();
+        boolean result2 = fii.isB3();
+        boolean result3 = acao.isInvestimentoExterior();
+        boolean result4 = fii.isInvestimentoExterior();
+
+        // Assert
+        assertTrue(result1);
+        assertTrue(result2);
+        assertFalse(result3);
+        assertFalse(result4);
+    }
+
+    @Test
+    public void testarTipoDeInvestimentoNoExterior() {
+        // Arrange
+        AtivoType stock = AtivoType.STOCK;
+        AtivoType reit = AtivoType.REIT;
+
+        // Act
+        boolean result1 = stock.isInvestimentoExterior();
+        boolean result2 = reit.isInvestimentoExterior();
+        boolean result3 = stock.isB3();
+        boolean result4 = reit.isB3();
+
+        // Assert
+        assertTrue(result1);
+        assertTrue(result2);
+        assertFalse(result3);
+        assertFalse(result4);
     }
 
 }
