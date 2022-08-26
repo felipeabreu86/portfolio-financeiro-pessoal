@@ -6,17 +6,17 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "usuarios")
+@Table(name = "users")
 public class Usuario {
 
     @Id
-    @Column(name = "nome_usuario")
+    @Column(name = "username")
     private String nomeUsuario;
 
-    @Column(name = "senha")
+    @Column(name = "password")
     private String senha;
 
-    @Column(name = "ativo")
+    @Column(name = "enabled")
     private Boolean ativo;
 
     public Usuario() {
