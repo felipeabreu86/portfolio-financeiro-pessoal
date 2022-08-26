@@ -21,7 +21,8 @@ public class WebSecurityConfiguration implements HttpSessionListener {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        String defaultSucessUrl = String.format("/%s", TelasType.DASHBOARD.toString().toLowerCase());     
+        String defaultSucessUrl = String.format("/%s", TelasType.DASHBOARD.toString().toLowerCase());
+        
         String[] authorizedResources = { 
                 "/login/**", 
                 "/img/**", 
