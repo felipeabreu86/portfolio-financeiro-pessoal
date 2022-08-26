@@ -40,9 +40,9 @@ public final class StringUtil {
     /**
      * Combina duas Strings com uma barra "/"
      * 
-     * @param str1 - 1a parte do endere篍
-     * @param str2 - 2a parte do endere篍
-     * @return endere篠combinado com uma barra "/"
+     * @param str1 - 1a parte do endereço
+     * @param str2 - 2a parte do endereço
+     * @return endereço combinado com uma barra "/"
      */
     public static String combineStringsToPath(String str1, String str2) {
         String path = "";

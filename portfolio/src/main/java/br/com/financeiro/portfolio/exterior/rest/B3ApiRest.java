@@ -4,7 +4,6 @@ import java.math.BigDecimal;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +16,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 import br.com.financeiro.portfolio.core.dto.ResponseB3ApiDto;
 import br.com.financeiro.portfolio.core.util.JsonUtil;
 import br.com.financeiro.portfolio.core.util.StringUtil;
+import br.com.financeiro.portfolio.domain.service.AtivoService;
 
 @RestController
 @RequestMapping(value = "/api/b3")
@@ -25,36 +25,54 @@ public class B3ApiRest {
     @Autowired
     private WebClient webClient;
 
-    @Value("${b3.api}")
-    private String b3ApiUri;
+    @Autowired
+    private AtivoService ativoService;
 
+    /**
+     * 
+     * @param codigoAtivo
+     * @param pregoes
+     * @return
+     */
     @GetMapping(
-            value = "/dados/{codigoAtivo}", 
+            value = { "/dados/{codigoAtivo}", "/dados/{codigoAtivo}/{pregoes}" }, 
             consumes = MediaType.APPLICATION_JSON_VALUE, 
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> obterDadosDoAtivoPelo(@PathVariable String codigoAtivo) {
+    public ResponseEntity<String> obterDadosDoAtivo(@PathVariable String codigoAtivo, @PathVariable Optional<Integer> pregoes) {
         
-        String responseBody = webClient
-                .get()
-                .uri(getB3ApiUri(codigoAtivo))
-                .accept(MediaType.APPLICATION_JSON)
-                .retrieve()
-                .bodyToMono(String.class)
-                .block();
-
+        String responseBody = null;        
+        String b3ApiUri = pregoes.isPresent() 
+                ? ativoService.obterUriApiB3(codigoAtivo, pregoes.get())
+                : ativoService.obterUriApiB3(codigoAtivo, 1);
+                
+        if (!StringUtil.isNullOrEmpty(b3ApiUri)) {
+            responseBody = webClient
+                    .get()
+                    .uri(b3ApiUri)
+                    .accept(MediaType.APPLICATION_JSON)
+                    .retrieve()
+                    .bodyToMono(String.class)
+                    .block();
+        }
+        
         return !StringUtil.isNullOrEmpty(responseBody) 
                 ? ResponseEntity.ok(responseBody)
                 : ResponseEntity.notFound().build();
     }
     
+    /**
+     * 
+     * @param codigoAtivo
+     * @return
+     */
     @GetMapping(
-            value = "/cotacao/{codigoAtivo}", 
+            value = { "/cotacao/{codigoAtivo}" }, 
             consumes = MediaType.APPLICATION_JSON_VALUE, 
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<BigDecimal> obterUltimaCotacaoPelo(@PathVariable String codigoAtivo) {  
+    public ResponseEntity<BigDecimal> obterUltimaCotacao(@PathVariable String codigoAtivo) {  
         
         ResponseB3ApiDto responseB3ApiDto = null;
-        ResponseEntity<String> response = obterDadosDoAtivoPelo(codigoAtivo);
+        ResponseEntity<String> response = obterDadosDoAtivo(codigoAtivo, Optional.ofNullable(null));
 
         if (response.getStatusCode().equals(HttpStatus.OK)) {
             Optional<ResponseB3ApiDto[]> optB3Api = JsonUtil.readValue(response.getBody(), ResponseB3ApiDto[].class);
@@ -67,10 +85,6 @@ public class B3ApiRest {
         return responseB3ApiDto != null 
                 ? ResponseEntity.ok(responseB3ApiDto.getUltimaCotacao())
                 : ResponseEntity.ok(BigDecimal.ZERO);
-    }
-
-    private String getB3ApiUri(String codigoAtivo) {
-        return b3ApiUri.replace("{ticker}", codigoAtivo.trim());
     }
 
 }
