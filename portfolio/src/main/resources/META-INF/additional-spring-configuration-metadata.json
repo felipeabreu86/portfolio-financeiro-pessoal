@@ -1,0 +1,5 @@
+{"properties": [{
+  "name": "b3.api",
+  "type": "java.lang.String",
+  "description": "Url para consultar API da B3"
+}]}

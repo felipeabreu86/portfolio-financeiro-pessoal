@@ -1,44 +1,46 @@
 package br.com.financeiro.portfolio.domain.entity;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
 import br.com.financeiro.portfolio.domain.type.AtivoType;
 
-class AtivoTest {
+public class AtivoTest {
 
     @Test
-    void testarCriarAtivoStock() {
+    public void testarCriarAtivoStock() {
         // Arrange
         Ativo asset = null;
 
         // Act
-        asset = new Ativo(AtivoType.STOCK, "ABCD3");
+        asset = new Ativo(AtivoType.STOCK, "ABCD");
 
         // Assert
         assertEquals(true, asset instanceof Ativo);
-        assertEquals("ABCD3", asset.getCodigoAtivo());
+        assertEquals("ABCD", asset.getCodigoAtivo());
         assertEquals(AtivoType.STOCK, asset.getTipoAtivo());
     }
 
     @Test
-    void testarCriarAtivoReit() {
+    public void testarCriarAtivoReit() {
         // Arrange
         Ativo asset = null;
 
         // Act
-        asset = new Ativo(AtivoType.REIT, "ABCD11");
+        asset = new Ativo(AtivoType.REIT, "ABC");
 
         // Asset
         assertEquals(true, asset instanceof Ativo);
-        assertEquals("ABCD11", asset.getCodigoAtivo());
+        assertEquals("ABC", asset.getCodigoAtivo());
         assertEquals(AtivoType.REIT, asset.getTipoAtivo());
     }
 
     @Test
-    void testarCriarAtivoAcao() {
+    public void testarCriarAtivoAcao() {
         // Arrange
         Ativo asset = null;
 
@@ -52,7 +54,7 @@ class AtivoTest {
     }
 
     @Test
-    void testarCriarAtivoFundoImobiliario() {
+    public void testarCriarAtivoFundoImobiliario() {
         // Arrange
         Ativo asset = null;
 
@@ -66,47 +68,52 @@ class AtivoTest {
     }
 
     @Test
-    void testarCriarAtivoComParametrosNulos() {
+    public void testarCriarAtivoComParametrosNulos() {
+        // Arrange / Act
+        NullPointerException thrown1 = assertThrows(NullPointerException.class, () -> new Ativo(null, null),
+                "Error message");
+        NullPointerException thrown2 = assertThrows(NullPointerException.class, () -> new Ativo(null, "ABCD3"),
+                "Error message");
+        NullPointerException thrown3 = assertThrows(NullPointerException.class, () -> new Ativo(AtivoType.REIT, null),
+                "Error message");
+        NullPointerException thrown4 = assertThrows(NullPointerException.class, () -> new Ativo(AtivoType.STOCK, null),
+                "Error message");
+        NullPointerException thrown5 = assertThrows(NullPointerException.class, () -> new Ativo(AtivoType.ACAO, null),
+                "Error message");
+        NullPointerException thrown6 = assertThrows(NullPointerException.class,
+                () -> new Ativo(AtivoType.FUNDO_IMOBILIARIO, null), "Error message");
+
+        // Assert
+        assertEquals(NullPointerException.class, thrown1.getClass());
+        assertEquals(NullPointerException.class, thrown2.getClass());
+        assertEquals(NullPointerException.class, thrown3.getClass());
+        assertEquals(NullPointerException.class, thrown4.getClass());
+        assertEquals(NullPointerException.class, thrown5.getClass());
+        assertEquals(NullPointerException.class, thrown6.getClass());
+    }
+
+    @Test
+    public void testarSeAtivoEstaComStatusValido() {
         // Arrange
-        Ativo asset1 = null;
-        Ativo asset2 = null;
-        Ativo asset3 = null;
-        Ativo asset4 = null;
-        Ativo asset5 = null;
-        Ativo asset6 = null;
+        Ativo asset = null;
 
         // Act
-        asset1 = new Ativo(null, null);
-        asset2 = new Ativo(null, "ABCD3");
-        asset3 = new Ativo(AtivoType.REIT, null);
-        asset4 = new Ativo(AtivoType.STOCK, null);
-        asset5 = new Ativo(AtivoType.ACAO, null);
-        asset6 = new Ativo(AtivoType.FUNDO_IMOBILIARIO, null);
+        asset = new Ativo(AtivoType.ACAO, "ABCD3");
 
-        // Asset
-        assertEquals(true, asset1 instanceof Ativo);
-        assertNull(asset1.getCodigoAtivo());
-        assertNull(asset1.getTipoAtivo());
+        // Assert
+        assertTrue(asset.isValido());
+    }
 
-        assertEquals(true, asset2 instanceof Ativo);
-        assertEquals("ABCD3", asset2.getCodigoAtivo());
-        assertNull(asset2.getTipoAtivo());
+    @Test
+    public void testarSeAtivoEstaComStatusInvalido() {
+        // Arrange
+        Ativo asset = null;
 
-        assertEquals(true, asset3 instanceof Ativo);
-        assertNull(asset3.getCodigoAtivo());
-        assertEquals(AtivoType.REIT, asset3.getTipoAtivo());
+        // Act
+        asset = new Ativo();
 
-        assertEquals(true, asset4 instanceof Ativo);
-        assertNull(asset4.getCodigoAtivo());
-        assertEquals(AtivoType.STOCK, asset4.getTipoAtivo());
-
-        assertEquals(true, asset5 instanceof Ativo);
-        assertNull(asset5.getCodigoAtivo());
-        assertEquals(AtivoType.ACAO, asset5.getTipoAtivo());
-
-        assertEquals(true, asset6 instanceof Ativo);
-        assertNull(asset6.getCodigoAtivo());
-        assertEquals(AtivoType.FUNDO_IMOBILIARIO, asset6.getTipoAtivo());
+        // Assert
+        assertFalse(asset.isValido());
     }
 
 }

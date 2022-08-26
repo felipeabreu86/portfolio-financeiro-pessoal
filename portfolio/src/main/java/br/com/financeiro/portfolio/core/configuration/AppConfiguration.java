@@ -1,4 +1,4 @@
-package br.com.financeiro.portfolio.application.configuration;
+package br.com.financeiro.portfolio.core.configuration;
 
 import java.time.Duration;
 

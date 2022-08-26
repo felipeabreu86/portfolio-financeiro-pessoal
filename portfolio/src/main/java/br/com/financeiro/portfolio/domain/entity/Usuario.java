@@ -1,21 +1,23 @@
 package br.com.financeiro.portfolio.domain.entity;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.MappedSuperclass;
+import javax.persistence.Table;
 
-@MappedSuperclass
+@Entity
+@Table(name = "usuarios")
 public class Usuario {
 
     @Id
-    @Column(name = "username")
-    protected String nomeUsuario;
+    @Column(name = "nome_usuario")
+    private String nomeUsuario;
 
-    @Column(name = "password")
-    protected String senha;
+    @Column(name = "senha")
+    private String senha;
 
-    @Column(name = "enabled")
-    protected Boolean ativo;
+    @Column(name = "ativo")
+    private Boolean ativo;
 
     public Usuario() {
         super();
@@ -38,6 +40,10 @@ public class Usuario {
 
     public Boolean isAtivo() {
         return ativo;
+    }
+
+    public void updateAtivo(Boolean ativo) {
+        this.ativo = ativo;
     }
 
 }

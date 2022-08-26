@@ -1,4 +1,4 @@
-package br.com.financeiro.portfolio.shared.util;
+package br.com.financeiro.portfolio.core.util;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -10,9 +10,9 @@ import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
 
-import br.com.financeiro.portfolio.shared.TokenMock;
+import br.com.financeiro.portfolio.core.TokenMock;
 
-class JsonUtilTest {
+public class JsonUtilTest {
 
     private static final String jsonValido1 = "{\"access_token\":\"123456\",\"token_type\":\"Bearer\"}";
     private static final String jsonValido2 = "{\"access_token\":\"123456\",\"token_type\": null}";

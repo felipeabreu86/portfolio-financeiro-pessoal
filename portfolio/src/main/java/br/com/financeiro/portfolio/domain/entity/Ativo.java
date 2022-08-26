@@ -1,16 +1,20 @@
 package br.com.financeiro.portfolio.domain.entity;
 
+import java.util.Objects;
+
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.MappedSuperclass;
+import javax.persistence.Table;
 
 import br.com.financeiro.portfolio.domain.type.AtivoType;
 
-@MappedSuperclass
+@Entity
+@Table(name = "ativos")
 public class Ativo {
 
     @Id
@@ -19,14 +23,19 @@ public class Ativo {
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    protected AtivoType tipoAtivo;
+    private AtivoType tipoAtivo;
 
     @Column(nullable = false, unique = true)
-    protected String codigoAtivo;
+    private String codigoAtivo;
+
+    public Ativo() {
+        super();
+    }
 
     public Ativo(AtivoType tipoDeAtivo, String codigoAtivo) {
-        this.tipoAtivo = tipoDeAtivo;
-        this.codigoAtivo = codigoAtivo;
+        this();
+        this.tipoAtivo = Objects.requireNonNull(tipoDeAtivo);
+        this.codigoAtivo = this.getTipoAtivo().validar(codigoAtivo);
     }
 
     public long getId() {
@@ -39,6 +48,13 @@ public class Ativo {
 
     public String getCodigoAtivo() {
         return codigoAtivo;
+    }
+
+    public boolean isValido() {
+        if (this.tipoAtivo == null || this.codigoAtivo == null) {
+            return false;
+        }
+        return true;
     }
 
 }
