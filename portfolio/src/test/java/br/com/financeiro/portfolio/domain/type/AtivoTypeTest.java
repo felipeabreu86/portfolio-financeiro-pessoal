@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
+import br.com.financeiro.portfolio.core.type.AtivoType;
 import br.com.financeiro.portfolio.domain.AtivoTestUtil;
 import br.com.financeiro.portfolio.domain.entity.Ativo;
 

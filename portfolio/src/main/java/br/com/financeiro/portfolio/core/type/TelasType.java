@@ -1,4 +1,4 @@
-package br.com.financeiro.portfolio.domain.type;
+package br.com.financeiro.portfolio.core.type;
 
 public enum TelasType {
 

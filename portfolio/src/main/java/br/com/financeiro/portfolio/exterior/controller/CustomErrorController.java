@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.ServletWebRequest;
 
+import br.com.financeiro.portfolio.core.type.ErroHttpType;
 import br.com.financeiro.portfolio.core.util.MessagePropertiesUtil;
-import br.com.financeiro.portfolio.domain.type.ErroHttpType;
 
 @Controller
 public class CustomErrorController implements ErrorController {

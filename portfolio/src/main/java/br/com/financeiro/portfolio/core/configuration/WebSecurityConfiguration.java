@@ -14,7 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
-import br.com.financeiro.portfolio.domain.type.TelasType;
+import br.com.financeiro.portfolio.core.type.TelasType;
 
 @Configuration
 public class WebSecurityConfiguration implements HttpSessionListener {
