@@ -1,9 +1,15 @@
 package br.com.financeiro.portfolio.domain.service;
 
+import java.util.List;
+
+import br.com.financeiro.portfolio.domain.entity.Ativo;
+
 public interface AtivoService {
 
-    String obterUriApiB3();
+    String obterUriDaApi(String codigoAtivo, int quantidadePregoes);
 
-    String obterUriApiB3(String codigoAtivo, int quantidadePregoes);
+    List<Ativo> obterTodosAtivosDaB3();
+    
+    List<Ativo> obterTodosAtivosDoExterior();
 
 }

@@ -20,7 +20,7 @@ import br.com.financeiro.portfolio.domain.service.AtivoService;
 
 @RestController
 @RequestMapping(value = "/api/b3")
-public class B3ApiRest {
+public class AtivoB3ApiRest {
         
     @Autowired
     private WebClient webClient;
@@ -42,8 +42,8 @@ public class B3ApiRest {
         
         String responseBody = null;        
         String b3ApiUri = pregoes.isPresent() 
-                ? ativoService.obterUriApiB3(codigoAtivo, pregoes.get())
-                : ativoService.obterUriApiB3(codigoAtivo, 1);
+                ? ativoService.obterUriDaApi(codigoAtivo, pregoes.get())
+                : ativoService.obterUriDaApi(codigoAtivo, 1);
                 
         if (!StringUtil.isNullOrEmpty(b3ApiUri)) {
             responseBody = webClient
@@ -72,7 +72,7 @@ public class B3ApiRest {
     public ResponseEntity<BigDecimal> obterUltimaCotacao(@PathVariable String codigoAtivo) {  
         
         ResponseB3ApiDto responseB3ApiDto = null;
-        ResponseEntity<String> response = obterDadosDoAtivo(codigoAtivo, Optional.ofNullable(null));
+        ResponseEntity<String> response = obterDadosDoAtivo(codigoAtivo, Optional.of(1));
 
         if (response.getStatusCode().equals(HttpStatus.OK)) {
             Optional<ResponseB3ApiDto[]> optB3Api = JsonUtil.readValue(response.getBody(), ResponseB3ApiDto[].class);

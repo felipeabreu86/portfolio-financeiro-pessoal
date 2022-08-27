@@ -4,14 +4,14 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import br.com.financeiro.portfolio.core.util.MessagePropertiesUtil;
+import br.com.financeiro.portfolio.core.util.MessageUtil;
 
 public enum ErroHttpType {
 
     HTTP400 {
         @Override
-        public String obterMensagemDeErro(MessagePropertiesUtil messagePropertiesUtil) {
-            return messagePropertiesUtil.obterMensagemPor("error.http.400");
+        public String obterMensagemDeErro(MessageUtil messagePropertiesUtil) {
+            return messagePropertiesUtil.obterMensagem("error.http.400");
         }
 
         @Override
@@ -21,8 +21,8 @@ public enum ErroHttpType {
     },
     HTTP401 {
         @Override
-        public String obterMensagemDeErro(MessagePropertiesUtil messagePropertiesUtil) {
-            return messagePropertiesUtil.obterMensagemPor("error.http.401");
+        public String obterMensagemDeErro(MessageUtil messagePropertiesUtil) {
+            return messagePropertiesUtil.obterMensagem("error.http.401");
         }
 
         @Override
@@ -32,8 +32,8 @@ public enum ErroHttpType {
     },
     HTTP402 {
         @Override
-        public String obterMensagemDeErro(MessagePropertiesUtil messagePropertiesUtil) {
-            return messagePropertiesUtil.obterMensagemPor("error.http.402");
+        public String obterMensagemDeErro(MessageUtil messagePropertiesUtil) {
+            return messagePropertiesUtil.obterMensagem("error.http.402");
         }
 
         @Override
@@ -43,8 +43,8 @@ public enum ErroHttpType {
     },
     HTTP403 {
         @Override
-        public String obterMensagemDeErro(MessagePropertiesUtil messagePropertiesUtil) {
-            return messagePropertiesUtil.obterMensagemPor("error.http.403");
+        public String obterMensagemDeErro(MessageUtil messagePropertiesUtil) {
+            return messagePropertiesUtil.obterMensagem("error.http.403");
         }
 
         @Override
@@ -54,8 +54,8 @@ public enum ErroHttpType {
     },
     HTTP404 {
         @Override
-        public String obterMensagemDeErro(MessagePropertiesUtil messagePropertiesUtil) {
-            return messagePropertiesUtil.obterMensagemPor("error.http.404");
+        public String obterMensagemDeErro(MessageUtil messagePropertiesUtil) {
+            return messagePropertiesUtil.obterMensagem("error.http.404");
         }
 
         @Override
@@ -65,8 +65,8 @@ public enum ErroHttpType {
     },
     HTTP405 {
         @Override
-        public String obterMensagemDeErro(MessagePropertiesUtil messagePropertiesUtil) {
-            return messagePropertiesUtil.obterMensagemPor("error.http.405");
+        public String obterMensagemDeErro(MessageUtil messagePropertiesUtil) {
+            return messagePropertiesUtil.obterMensagem("error.http.405");
         }
 
         @Override
@@ -76,8 +76,8 @@ public enum ErroHttpType {
     },
     HTTP406 {
         @Override
-        public String obterMensagemDeErro(MessagePropertiesUtil messagePropertiesUtil) {
-            return messagePropertiesUtil.obterMensagemPor("error.http.406");
+        public String obterMensagemDeErro(MessageUtil messagePropertiesUtil) {
+            return messagePropertiesUtil.obterMensagem("error.http.406");
         }
 
         @Override
@@ -87,8 +87,8 @@ public enum ErroHttpType {
     },
     HTTP407 {
         @Override
-        public String obterMensagemDeErro(MessagePropertiesUtil messagePropertiesUtil) {
-            return messagePropertiesUtil.obterMensagemPor("error.http.407");
+        public String obterMensagemDeErro(MessageUtil messagePropertiesUtil) {
+            return messagePropertiesUtil.obterMensagem("error.http.407");
         }
 
         @Override
@@ -98,8 +98,8 @@ public enum ErroHttpType {
     },
     HTTP408 {
         @Override
-        public String obterMensagemDeErro(MessagePropertiesUtil messagePropertiesUtil) {
-            return messagePropertiesUtil.obterMensagemPor("error.http.408");
+        public String obterMensagemDeErro(MessageUtil messagePropertiesUtil) {
+            return messagePropertiesUtil.obterMensagem("error.http.408");
         }
 
         @Override
@@ -109,8 +109,8 @@ public enum ErroHttpType {
     },
     HTTP409 {
         @Override
-        public String obterMensagemDeErro(MessagePropertiesUtil messagePropertiesUtil) {
-            return messagePropertiesUtil.obterMensagemPor("error.http.409");
+        public String obterMensagemDeErro(MessageUtil messagePropertiesUtil) {
+            return messagePropertiesUtil.obterMensagem("error.http.409");
         }
 
         @Override
@@ -120,8 +120,8 @@ public enum ErroHttpType {
     },
     HTTP410 {
         @Override
-        public String obterMensagemDeErro(MessagePropertiesUtil messagePropertiesUtil) {
-            return messagePropertiesUtil.obterMensagemPor("error.http.410");
+        public String obterMensagemDeErro(MessageUtil messagePropertiesUtil) {
+            return messagePropertiesUtil.obterMensagem("error.http.410");
         }
 
         @Override
@@ -131,8 +131,8 @@ public enum ErroHttpType {
     },
     HTTP411 {
         @Override
-        public String obterMensagemDeErro(MessagePropertiesUtil messagePropertiesUtil) {
-            return messagePropertiesUtil.obterMensagemPor("error.http.411");
+        public String obterMensagemDeErro(MessageUtil messagePropertiesUtil) {
+            return messagePropertiesUtil.obterMensagem("error.http.411");
         }
 
         @Override
@@ -142,8 +142,8 @@ public enum ErroHttpType {
     },
     HTTP412 {
         @Override
-        public String obterMensagemDeErro(MessagePropertiesUtil messagePropertiesUtil) {
-            return messagePropertiesUtil.obterMensagemPor("error.http.412");
+        public String obterMensagemDeErro(MessageUtil messagePropertiesUtil) {
+            return messagePropertiesUtil.obterMensagem("error.http.412");
         }
 
         @Override
@@ -153,8 +153,8 @@ public enum ErroHttpType {
     },
     HTTP413 {
         @Override
-        public String obterMensagemDeErro(MessagePropertiesUtil messagePropertiesUtil) {
-            return messagePropertiesUtil.obterMensagemPor("error.http.413");
+        public String obterMensagemDeErro(MessageUtil messagePropertiesUtil) {
+            return messagePropertiesUtil.obterMensagem("error.http.413");
         }
 
         @Override
@@ -164,8 +164,8 @@ public enum ErroHttpType {
     },
     HTTP414 {
         @Override
-        public String obterMensagemDeErro(MessagePropertiesUtil messagePropertiesUtil) {
-            return messagePropertiesUtil.obterMensagemPor("error.http.414");
+        public String obterMensagemDeErro(MessageUtil messagePropertiesUtil) {
+            return messagePropertiesUtil.obterMensagem("error.http.414");
         }
 
         @Override
@@ -175,8 +175,8 @@ public enum ErroHttpType {
     },
     HTTP415 {
         @Override
-        public String obterMensagemDeErro(MessagePropertiesUtil messagePropertiesUtil) {
-            return messagePropertiesUtil.obterMensagemPor("error.http.415");
+        public String obterMensagemDeErro(MessageUtil messagePropertiesUtil) {
+            return messagePropertiesUtil.obterMensagem("error.http.415");
         }
 
         @Override
@@ -186,8 +186,8 @@ public enum ErroHttpType {
     },
     HTTP416 {
         @Override
-        public String obterMensagemDeErro(MessagePropertiesUtil messagePropertiesUtil) {
-            return messagePropertiesUtil.obterMensagemPor("error.http.416");
+        public String obterMensagemDeErro(MessageUtil messagePropertiesUtil) {
+            return messagePropertiesUtil.obterMensagem("error.http.416");
         }
 
         @Override
@@ -197,8 +197,8 @@ public enum ErroHttpType {
     },
     HTTP417 {
         @Override
-        public String obterMensagemDeErro(MessagePropertiesUtil messagePropertiesUtil) {
-            return messagePropertiesUtil.obterMensagemPor("error.http.417");
+        public String obterMensagemDeErro(MessageUtil messagePropertiesUtil) {
+            return messagePropertiesUtil.obterMensagem("error.http.417");
         }
 
         @Override
@@ -208,8 +208,8 @@ public enum ErroHttpType {
     },
     HTTP500 {
         @Override
-        public String obterMensagemDeErro(MessagePropertiesUtil messagePropertiesUtil) {
-            return messagePropertiesUtil.obterMensagemPor("error.http.500");
+        public String obterMensagemDeErro(MessageUtil messagePropertiesUtil) {
+            return messagePropertiesUtil.obterMensagem("error.http.500");
         }
 
         @Override
@@ -219,8 +219,8 @@ public enum ErroHttpType {
     },
     HTTP501 {
         @Override
-        public String obterMensagemDeErro(MessagePropertiesUtil messagePropertiesUtil) {
-            return messagePropertiesUtil.obterMensagemPor("error.http.501");
+        public String obterMensagemDeErro(MessageUtil messagePropertiesUtil) {
+            return messagePropertiesUtil.obterMensagem("error.http.501");
         }
 
         @Override
@@ -230,8 +230,8 @@ public enum ErroHttpType {
     },
     HTTP502 {
         @Override
-        public String obterMensagemDeErro(MessagePropertiesUtil messagePropertiesUtil) {
-            return messagePropertiesUtil.obterMensagemPor("error.http.502");
+        public String obterMensagemDeErro(MessageUtil messagePropertiesUtil) {
+            return messagePropertiesUtil.obterMensagem("error.http.502");
         }
 
         @Override
@@ -241,8 +241,8 @@ public enum ErroHttpType {
     },
     HTTP503 {
         @Override
-        public String obterMensagemDeErro(MessagePropertiesUtil messagePropertiesUtil) {
-            return messagePropertiesUtil.obterMensagemPor("error.http.503");
+        public String obterMensagemDeErro(MessageUtil messagePropertiesUtil) {
+            return messagePropertiesUtil.obterMensagem("error.http.503");
         }
 
         @Override
@@ -252,8 +252,8 @@ public enum ErroHttpType {
     },
     HTTP504 {
         @Override
-        public String obterMensagemDeErro(MessagePropertiesUtil messagePropertiesUtil) {
-            return messagePropertiesUtil.obterMensagemPor("error.http.504");
+        public String obterMensagemDeErro(MessageUtil messagePropertiesUtil) {
+            return messagePropertiesUtil.obterMensagem("error.http.504");
         }
 
         @Override
@@ -263,8 +263,8 @@ public enum ErroHttpType {
     },
     HTTP505 {
         @Override
-        public String obterMensagemDeErro(MessagePropertiesUtil messagePropertiesUtil) {
-            return messagePropertiesUtil.obterMensagemPor("error.http.505");
+        public String obterMensagemDeErro(MessageUtil messagePropertiesUtil) {
+            return messagePropertiesUtil.obterMensagem("error.http.505");
         }
 
         @Override
@@ -274,8 +274,8 @@ public enum ErroHttpType {
     },
     HTTP511 {
         @Override
-        public String obterMensagemDeErro(MessagePropertiesUtil messagePropertiesUtil) {
-            return messagePropertiesUtil.obterMensagemPor("error.http.511");
+        public String obterMensagemDeErro(MessageUtil messagePropertiesUtil) {
+            return messagePropertiesUtil.obterMensagem("error.http.511");
         }
 
         @Override
@@ -299,7 +299,7 @@ public enum ErroHttpType {
                 : null;
     }
 
-    public static String obterMensagemPor(String httpErrorCode, MessagePropertiesUtil messagePropertiesUtil) {
+    public static String obterMensagemPor(String httpErrorCode, MessageUtil messagePropertiesUtil) {
         ErroHttpType httpError = from(httpErrorCode);        
         return httpError != null 
                 ? httpError.obterMensagemDeErro(messagePropertiesUtil) 
@@ -308,6 +308,6 @@ public enum ErroHttpType {
 
     public abstract String obterCodigoDeErro();
 
-    public abstract String obterMensagemDeErro(MessagePropertiesUtil messagePropertiesUtil);
+    public abstract String obterMensagemDeErro(MessageUtil messagePropertiesUtil);
 
 }

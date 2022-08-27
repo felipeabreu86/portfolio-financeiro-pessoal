@@ -8,7 +8,7 @@ import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Component;
 
 @Component
-public class MessagePropertiesUtil {
+public class MessageUtil {
 
     @Autowired
     private MessageSource messageSource;
@@ -23,11 +23,11 @@ public class MessagePropertiesUtil {
         this.locale = Objects.requireNonNull(locale);
     }
 
-    public String obterMensagemPor(String codigoRecurso) {
+    public String obterMensagem(String codigoRecurso) {
         return messageSource.getMessage(codigoRecurso, null, locale);
     }
 
-    public String obterMensagemPor(String codigoRecurso, Object... args) {
+    public String obterMensagem(String codigoRecurso, Object... args) {
         return messageSource.getMessage(codigoRecurso, args, locale);
     }
 

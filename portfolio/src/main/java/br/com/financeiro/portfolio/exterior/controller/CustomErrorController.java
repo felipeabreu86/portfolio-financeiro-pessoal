@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.ServletWebRequest;
 
 import br.com.financeiro.portfolio.core.type.ErroHttpType;
-import br.com.financeiro.portfolio.core.util.MessagePropertiesUtil;
+import br.com.financeiro.portfolio.core.util.MessageUtil;
 
 @Controller
 public class CustomErrorController implements ErrorController {
@@ -24,7 +24,7 @@ public class CustomErrorController implements ErrorController {
     private ErrorAttributes errorAttributes;
 
     @Autowired
-    private MessagePropertiesUtil messagePropertiesUtil;
+    private MessageUtil messageUtil;
 
     @RequestMapping("/error")
     public String handleError(HttpServletRequest request) {
@@ -36,7 +36,7 @@ public class CustomErrorController implements ErrorController {
 
         // send status and error description to error.html through request attributes
         request.setAttribute("status", status);
-        request.setAttribute("errordescription", ErroHttpType.obterMensagemPor(status, messagePropertiesUtil));
+        request.setAttribute("errordescription", ErroHttpType.obterMensagemPor(status, messageUtil));
 
         // display generic page error
         return "error";

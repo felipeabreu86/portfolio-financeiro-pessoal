@@ -1,6 +1,10 @@
 package br.com.financeiro.portfolio.core.configuration;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.time.Duration;
+import java.util.Properties;
 
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
@@ -8,7 +12,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
-import org.springframework.http.client.reactive.ClientHttpConnector;
 import org.springframework.http.client.reactive.ReactorClientHttpConnector;
 import org.springframework.web.reactive.function.client.WebClient;
 
@@ -29,24 +32,34 @@ public class AppConfiguration {
     }
 
     @Bean
-    public WebClient getWebClient() {
-        Http11SslContextSpec http11SslContextSpec = Http11SslContextSpec.forClient();
-        
+    public WebClient getWebClient() {        
         HttpClient httpClient = HttpClient
                 .create()
                 .responseTimeout(Duration.ofSeconds(30))        
                 .secure(spec -> spec
-                        .sslContext(http11SslContextSpec)
+                        .sslContext(Http11SslContextSpec.forClient())
                         .handshakeTimeout(Duration.ofSeconds(30))         
                         .closeNotifyFlushTimeout(Duration.ofSeconds(10))  
                         .closeNotifyReadTimeout(Duration.ofSeconds(10)));
-        
-        ClientHttpConnector connector = new ReactorClientHttpConnector(httpClient);
 
-        return WebClient.builder()
-                .clientConnector(connector)
+        return WebClient
+                .builder()
+                .clientConnector(new ReactorClientHttpConnector(httpClient))
                 .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .build();
+    }
+    
+    @Bean(name = "chaveApiAtivoExterior")
+    public String obterChaveApiAtivoExterior() throws IOException {
+        String apiKey = null;
+
+        try (InputStream input = new FileInputStream("src/main/resources/api/chaves.properties")) {
+            Properties prop = new Properties();
+            prop.load(input);
+            apiKey = prop.getProperty("exterior.api.key");
+        }
+
+        return apiKey != null ? apiKey : "";
     }
 
 }
