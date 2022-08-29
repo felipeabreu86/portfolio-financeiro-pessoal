@@ -81,6 +81,15 @@
 			<artifactId>thymeleaf-extras-springsecurity5</artifactId>
 		</dependency>
 		<!-- Fim - Frontend -->
+
+		<!-- Início - Outros -->
+		<dependency>
+			<groupId>commons-validator</groupId>
+			<artifactId>commons-validator</artifactId>
+			<version>1.7</version>
+			<optional>true</optional>
+		</dependency>
+		<!-- Fim - Outros -->
 	</dependencies>
 
 	<build>

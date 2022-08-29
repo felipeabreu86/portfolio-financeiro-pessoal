@@ -60,6 +60,15 @@ public class StringUtilTest {
     public void testarApplyRelativePath() {
         String result = StringUtil.applyRelativePath("/a/b", "/p");
         assertEquals("/a/p", result);
+        
+        result = StringUtil.applyRelativePath("/a/", "/p");
+        assertEquals("/a/p", result);
+        
+        result = StringUtil.applyRelativePath("/a", "/p");
+        assertEquals("/p", result);
+        
+        result = StringUtil.applyRelativePath("/a", "p");
+        assertEquals("/p", result);
     }
 
     @Test

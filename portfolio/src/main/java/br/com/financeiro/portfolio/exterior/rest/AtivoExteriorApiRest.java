@@ -3,7 +3,9 @@ package br.com.financeiro.portfolio.exterior.rest;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Optional;
+import java.util.Properties;
 
+import org.apache.commons.validator.routines.UrlValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
@@ -25,11 +27,11 @@ public class AtivoExteriorApiRest {
         
     @Autowired
     private WebClient webClient;
-    
+
     @Autowired
-    @Qualifier("chaveApiAtivoExterior")
-    private String ativoExteriorApiKey;
-        
+    @Qualifier("envProperties")
+    private Properties envProperties;
+
     /**
      * 
      * @param codigoAtivo
@@ -42,21 +44,30 @@ public class AtivoExteriorApiRest {
             consumes = MediaType.APPLICATION_JSON_VALUE, 
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> obterDadosDoAtivo(@PathVariable String codigoAtivo, @PathVariable Optional<Integer> periodo) {
+                
+        String responseBody = null;
         
         Integer periodoDias = periodo.isPresent() && periodo.get() > 0 
                 ? periodo.get() 
                 : 1;
         
-        String responseBody = webClient
-                .post()
-                .uri("https://yahoo-finance97.p.rapidapi.com/price")
-                .header("content-type", "application/x-www-form-urlencoded")
-                .header("X-RapidAPI-Key", ativoExteriorApiKey)
-                .header("X-RapidAPI-Host", "yahoo-finance97.p.rapidapi.com")
-                .bodyValue("symbol=" + codigoAtivo + "&period=" + periodoDias + "d")
-                .retrieve()
-                .bodyToMono(String.class)
-                .block();
+        String exteriorApiUri = envProperties.getProperty("yahoo.api.uri");
+        
+        String[] schemes = { "https" };
+        
+        if (new UrlValidator(schemes).isValid(exteriorApiUri)) {
+            responseBody = webClient
+                    .post()
+                    .uri(exteriorApiUri)
+                    .header("content-type", "application/x-www-form-urlencoded")
+                    .header("X-RapidAPI-Key", envProperties.getProperty("yahoo.api.key"))
+                    .header("X-RapidAPI-Host", envProperties.getProperty("yahoo.api.host"))
+                    .bodyValue("symbol=" + codigoAtivo + "&period=" + periodoDias + "d")
+                    .retrieve()
+                    .bodyToMono(String.class)
+                    .block()
+                    .trim();
+        }
 
         return !StringUtil.isNullOrEmpty(responseBody) 
                 ? ResponseEntity.ok(responseBody)

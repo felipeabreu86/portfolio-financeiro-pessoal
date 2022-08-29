@@ -2,7 +2,9 @@ package br.com.financeiro.portfolio.exterior.rest;
 
 import java.math.BigDecimal;
 import java.util.Optional;
+import java.util.Properties;
 
+import org.apache.commons.validator.routines.UrlValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
@@ -17,7 +19,6 @@ import org.springframework.web.reactive.function.client.WebClient;
 import br.com.financeiro.portfolio.core.dto.ResponseB3ApiDto;
 import br.com.financeiro.portfolio.core.util.JsonUtil;
 import br.com.financeiro.portfolio.core.util.StringUtil;
-import br.com.financeiro.portfolio.domain.service.AtivoService;
 
 @RestController
 @RequestMapping(value = "/api/b3")
@@ -25,39 +26,46 @@ public class AtivoB3ApiRest {
         
     @Autowired
     private WebClient webClient;
-
+    
     @Autowired
-    @Qualifier("ativoB3Service")
-    private AtivoService ativoB3Service;
+    @Qualifier("envProperties")
+    private Properties envProperties;
 
     /**
      * 
      * @param codigoAtivo
-     * @param pregoes
+     * @param periodo
      * @return
      */
     @GetMapping(
-            value = { "/dados/{codigoAtivo}", "/dados/{codigoAtivo}/{pregoes}" }, 
+            value = { "/dados/{codigoAtivo}", "/dados/{codigoAtivo}/{periodo}" }, 
             consumes = MediaType.APPLICATION_JSON_VALUE, 
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> obterDadosDoAtivo(@PathVariable String codigoAtivo, @PathVariable Optional<Integer> pregoes) {
+    public ResponseEntity<String> obterDadosDoAtivo(@PathVariable String codigoAtivo, @PathVariable Optional<Integer> periodo) {
+
+        String responseBody = null;
         
-        String responseBody = null;        
-        String b3ApiUri = pregoes.isPresent() 
-                ? ativoB3Service.obterUriDaApi(codigoAtivo, pregoes.get())
-                : ativoB3Service.obterUriDaApi(codigoAtivo, 1);
-                
-        if (!StringUtil.isNullOrEmpty(b3ApiUri)) {
+        Integer periodoDias = (periodo.isPresent() && periodo.get() > 0)
+                ? periodo.get() 
+                : 1;
+        
+        String b3ApiUri = String.format("%s/%s",
+                StringUtil.combineStringsToPath(envProperties.getProperty("b3.api.uri"), codigoAtivo.trim()), periodoDias);        
+        
+        String[] schemes = { "https" };
+        
+        if (new UrlValidator(schemes).isValid(b3ApiUri)) {
             responseBody = webClient
                     .get()
                     .uri(b3ApiUri)
                     .accept(MediaType.APPLICATION_JSON)
                     .retrieve()
                     .bodyToMono(String.class)
-                    .block();
+                    .block()
+                    .trim();
         }
         
-        return !StringUtil.isNullOrEmpty(responseBody) 
+        return (!StringUtil.isNullOrEmpty(responseBody) && !responseBody.equals("[]"))
                 ? ResponseEntity.ok(responseBody)
                 : ResponseEntity.notFound().build();
     }

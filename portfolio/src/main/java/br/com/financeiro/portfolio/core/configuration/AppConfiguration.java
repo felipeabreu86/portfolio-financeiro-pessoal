@@ -52,15 +52,13 @@ public class AppConfiguration {
                 .build();
     }
     
-    @Bean(name = "chaveApiAtivoExterior")
-    public String obterChaveApiAtivoExterior() throws IOException {
-        String apiKey = null;
+    @Bean(name = "envProperties")
+    public Properties obterVariaveisDeAmbiente() throws IOException {
         try (InputStream input = new FileInputStream("env/env.properties")) {
             Properties prop = new Properties();
             prop.load(input);
-            apiKey = prop.getProperty("yahoo.api.key");
+            return prop;
         }
-        return apiKey != null ? apiKey : "";
     }
     
     @Bean(name = "ativoB3Service")
