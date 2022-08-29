@@ -15,6 +15,9 @@ import org.springframework.http.MediaType;
 import org.springframework.http.client.reactive.ReactorClientHttpConnector;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import br.com.financeiro.portfolio.domain.service.AtivoService;
+import br.com.financeiro.portfolio.domain.service.implementation.AtivoB3ServiceImpl;
+import br.com.financeiro.portfolio.domain.service.implementation.AtivoExteriorServiceImpl;
 import reactor.netty.http.Http11SslContextSpec;
 import reactor.netty.http.client.HttpClient;
 
@@ -53,13 +56,23 @@ public class AppConfiguration {
     public String obterChaveApiAtivoExterior() throws IOException {
         String apiKey = null;
 
-        try (InputStream input = new FileInputStream("src/main/resources/api/chaves.properties")) {
+        try (InputStream input = new FileInputStream("env/env.properties")) {
             Properties prop = new Properties();
             prop.load(input);
-            apiKey = prop.getProperty("exterior.api.key");
+            apiKey = prop.getProperty("yahoo.api.key");
         }
 
         return apiKey != null ? apiKey : "";
+    }
+    
+    @Bean(name = "ativoB3Service")
+    public AtivoService obterAtivoB3Service() {
+        return new AtivoB3ServiceImpl();
+    }
+
+    @Bean(name = "ativoExteriorService")
+    public AtivoService obterAtivoExteriorService() {
+        return new AtivoExteriorServiceImpl();
     }
 
 }

@@ -11,7 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import br.com.financeiro.portfolio.core.type.AtivoType;
+import br.com.financeiro.portfolio.domain.entity.type.AtivoType;
 
 @Entity
 @Table(name = "ativos")

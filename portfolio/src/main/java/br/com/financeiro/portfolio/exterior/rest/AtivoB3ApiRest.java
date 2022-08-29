@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -26,7 +27,8 @@ public class AtivoB3ApiRest {
     private WebClient webClient;
 
     @Autowired
-    private AtivoService ativoService;
+    @Qualifier("ativoB3Service")
+    private AtivoService ativoB3Service;
 
     /**
      * 
@@ -42,8 +44,8 @@ public class AtivoB3ApiRest {
         
         String responseBody = null;        
         String b3ApiUri = pregoes.isPresent() 
-                ? ativoService.obterUriDaApi(codigoAtivo, pregoes.get())
-                : ativoService.obterUriDaApi(codigoAtivo, 1);
+                ? ativoB3Service.obterUriDaApi(codigoAtivo, pregoes.get())
+                : ativoB3Service.obterUriDaApi(codigoAtivo, 1);
                 
         if (!StringUtil.isNullOrEmpty(b3ApiUri)) {
             responseBody = webClient

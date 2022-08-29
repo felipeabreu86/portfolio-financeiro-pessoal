@@ -1,4 +1,4 @@
-package br.com.financeiro.portfolio.core.type;
+package br.com.financeiro.portfolio.domain.entity.type;
 
 import java.util.Objects;
 

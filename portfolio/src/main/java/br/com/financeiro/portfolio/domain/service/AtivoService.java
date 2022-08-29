@@ -8,8 +8,6 @@ public interface AtivoService {
 
     String obterUriDaApi(String codigoAtivo, int quantidadePregoes);
 
-    List<Ativo> obterTodosAtivosDaB3();
-    
-    List<Ativo> obterTodosAtivosDoExterior();
+    List<Ativo> obterTodosAtivos();
 
 }

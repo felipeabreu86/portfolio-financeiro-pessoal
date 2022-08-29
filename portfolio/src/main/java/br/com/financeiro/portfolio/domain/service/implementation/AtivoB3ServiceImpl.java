@@ -14,7 +14,7 @@ import br.com.financeiro.portfolio.domain.repository.AtivoRepository;
 import br.com.financeiro.portfolio.domain.service.AtivoService;
 
 @Service
-public class AtivoServiceImpl implements AtivoService {
+public class AtivoB3ServiceImpl implements AtivoService {
 
     @Autowired
     private AtivoRepository ativoRepository;
@@ -36,20 +36,11 @@ public class AtivoServiceImpl implements AtivoService {
     }
 
     @Override
-    public List<Ativo> obterTodosAtivosDaB3() {
+    public List<Ativo> obterTodosAtivos() {
         return ativoRepository
                 .obterTodosAtivos()
                 .stream()
                 .filter(a -> a.getTipoAtivo().isB3())
-                .collect(Collectors.toList());
-    }
-    
-    @Override
-    public List<Ativo> obterTodosAtivosDoExterior() {
-        return ativoRepository
-                .obterTodosAtivos()
-                .stream()
-                .filter(a -> a.getTipoAtivo().isInvestimentoExterior())
                 .collect(Collectors.toList());
     }
 
