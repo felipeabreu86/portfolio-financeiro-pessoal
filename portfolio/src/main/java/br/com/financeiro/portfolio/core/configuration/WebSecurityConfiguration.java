@@ -14,24 +14,21 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
-import br.com.financeiro.portfolio.core.type.TelasType;
-
 @Configuration
 public class WebSecurityConfiguration implements HttpSessionListener {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        String defaultSucessUrl = String.format("/%s", TelasType.DASHBOARD.toString().toLowerCase());
+        String defaultSucessUrl = "/home";//String.format("/%s", TelasType.DASHBOARD.toString().toLowerCase());
         
         String[] authorizedResources = { 
-                "/login/**", 
                 "/img/**", 
+                "/css/**", 
+                "/vendor/**", 
                 "/h2-console/**",
-                "/",
                 "/login" };
 
         return http
-                .httpBasic().and()
                 .authorizeRequests()
                 .antMatchers(authorizedResources)
                 .permitAll()

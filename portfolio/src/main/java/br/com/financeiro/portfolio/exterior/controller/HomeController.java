@@ -1,14 +1,24 @@
 package br.com.financeiro.portfolio.exterior.controller;
 
+import java.security.Principal;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class HomeController {
 
-    @GetMapping(value = "/")
+    @GetMapping(value = { "/", "/home" })
     public String home() {
         return "index";
+    }
+
+    @GetMapping(value = "/login")
+    public String login(Principal principal) {
+        boolean isUserLoggedIn = principal != null;
+        return isUserLoggedIn
+                ? "redirect:/home"
+                : "login";
     }
 
 }
