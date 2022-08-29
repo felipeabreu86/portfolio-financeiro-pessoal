@@ -40,7 +40,7 @@ public class UsuarioTest {
         Usuario usuario = new Usuario("usuario", "senha", false);
 
         // Act
-        usuario.updateAtivo(true);
+        usuario.updateStatusUsuario(true);
 
         // Assert
         assertTrue(usuario.isAtivo());
@@ -52,7 +52,7 @@ public class UsuarioTest {
         Usuario usuario = new Usuario("usuario", "senha", true);
 
         // Act
-        usuario.updateAtivo(false);
+        usuario.updateStatusUsuario(false);
 
         // Assert
         assertFalse(usuario.isAtivo());

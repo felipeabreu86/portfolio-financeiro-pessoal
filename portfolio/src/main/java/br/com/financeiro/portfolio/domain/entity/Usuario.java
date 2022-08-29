@@ -42,8 +42,8 @@ public class Usuario {
         return ativo;
     }
 
-    public void updateAtivo(Boolean ativo) {
-        this.ativo = ativo;
+    public void updateStatusUsuario(Boolean isAtivo) {
+        this.ativo = isAtivo;
     }
 
 }

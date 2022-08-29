@@ -51,10 +51,9 @@ public class Ativo {
     }
 
     public boolean isValido() {
-        if (this.tipoAtivo == null || this.codigoAtivo == null) {
-            return false;
-        }
-        return true;
+        return (this.tipoAtivo == null || this.codigoAtivo == null)
+                ? false
+                : true;
     }
 
 }

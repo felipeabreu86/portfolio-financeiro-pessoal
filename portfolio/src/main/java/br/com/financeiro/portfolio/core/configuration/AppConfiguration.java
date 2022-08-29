@@ -1,4 +1,4 @@
-package br.com.financeiro.portfolio.core.configuration;
+    package br.com.financeiro.portfolio.core.configuration;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -55,13 +55,11 @@ public class AppConfiguration {
     @Bean(name = "chaveApiAtivoExterior")
     public String obterChaveApiAtivoExterior() throws IOException {
         String apiKey = null;
-
         try (InputStream input = new FileInputStream("env/env.properties")) {
             Properties prop = new Properties();
             prop.load(input);
             apiKey = prop.getProperty("yahoo.api.key");
         }
-
         return apiKey != null ? apiKey : "";
     }
     

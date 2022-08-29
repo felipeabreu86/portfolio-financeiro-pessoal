@@ -21,10 +21,9 @@ public class ResponseExteriorApiDto {
     }
 
     public BigDecimal getUltimaCotacao() {
-        if (dados != null && dados.size() > 0) {
-            return dados.get(0).getPrecoFechamento();
-        }
-        return BigDecimal.ZERO;
+        return (dados != null && dados.size() > 0)
+                ? dados.get(0).getPrecoFechamento()
+                : BigDecimal.ZERO;
     }
 
 }

@@ -23,13 +23,9 @@ public class AtivoRepositoryImpl implements AtivoRepository {
 
     @Override
     public Optional<Ativo> salvar(Ativo ativo) {
-        Ativo ativoSalvo = null;
-
-        if (ativo != null && ativo.isValido()) {
-            ativoSalvo = ativoDao.save(ativo);
-        }
-
-        return Optional.ofNullable(ativoSalvo);
+        return (ativo != null && ativo.isValido())
+                ? Optional.of(ativoDao.save(ativo))
+                : Optional.empty();
     }
 
 }
