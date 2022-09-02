@@ -5,57 +5,37 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 public class UsuarioTest {
 
     @Test
     public void testarCriarNovoUsuarioSemParametros() {
         // Arrange / Act / Assert
-        new Usuario();
+        Usuario usuario = new Usuario();
+        assertFalse(usuario.isValido());
     }
 
     @Test
     public void testarCriarNovoUsuarioComParametros() {
         // Arrange
-        Usuario usuario = null;
-        Usuario usuario2 = null;
+        Usuario usuario = new Usuario();
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
         // Act
-        usuario = new Usuario("usuario", "senha", true);
-        usuario2 = new Usuario("usuario", "senha", false);
-        new Usuario(null, "senha", true);
-        new Usuario("usuario", null, true);
-        new Usuario(null, null, false);
+        usuario.setNome("nome");
+        usuario.setNomeUsuario("usuario");
+        usuario.setSenha("S3nh@S3nh@");
+        usuario.setSobrenome("sobrenome");
+        usuario.setStatus(false);
 
         // Assert
         assertEquals("usuario", usuario.getNomeUsuario());
-        assertEquals("senha", usuario.getSenha());
-        assertTrue(usuario.isAtivo());
-        assertFalse(usuario2.isAtivo());
-    }
-
-    @Test
-    public void testarSeUsuarioTemStatusValido() {
-        // Arrange
-        Usuario usuario = new Usuario("usuario", "senha", false);
-
-        // Act
-        usuario.updateStatusUsuario(true);
-
-        // Assert
-        assertTrue(usuario.isAtivo());
-    }
-
-    @Test
-    public void testarSeUsuarioTemStatusInvalido() {
-        // Arrange
-        Usuario usuario = new Usuario("usuario", "senha", true);
-
-        // Act
-        usuario.updateStatusUsuario(false);
-
-        // Assert
-        assertFalse(usuario.isAtivo());
+        assertEquals("nome", usuario.getNome());
+        assertTrue(encoder.matches("S3nh@S3nh@", usuario.getSenha()));
+        assertEquals("sobrenome", usuario.getSobrenome());
+        assertFalse(usuario.getStatus());
+        assertTrue(usuario.isValido());
     }
 
 }

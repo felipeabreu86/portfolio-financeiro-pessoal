@@ -1,8 +1,0 @@
-package br.com.financeiro.portfolio.core.type;
-
-public enum TelasType {
-
-    DASHBOARD, WALLETS, FIXEDINCOME, VARIABLEINCOME, INVESTMENTABROAD, CRYPTOCURRENCIES, REPORTS, PROFILE, CONTACT,
-    ABOUT, NOTIFICATIONS;
-
-}

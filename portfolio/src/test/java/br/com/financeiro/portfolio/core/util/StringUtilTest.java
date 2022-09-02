@@ -60,13 +60,13 @@ public class StringUtilTest {
     public void testarApplyRelativePath() {
         String result = StringUtil.applyRelativePath("/a/b", "/p");
         assertEquals("/a/p", result);
-        
+
         result = StringUtil.applyRelativePath("/a/", "/p");
         assertEquals("/a/p", result);
-        
+
         result = StringUtil.applyRelativePath("/a", "/p");
         assertEquals("/p", result);
-        
+
         result = StringUtil.applyRelativePath("/a", "p");
         assertEquals("/p", result);
     }
@@ -411,6 +411,89 @@ public class StringUtilTest {
     public void testarUnqualifyWithSeparator() {
         String result = StringUtil.unqualify("this:name:is:qualified", ':');
         assertEquals("qualified", result);
+    }
+
+    @Test
+    public void testarSeExisteCaracterMaisuculo() {
+        assertFalse(StringUtil.containsUpperCase(""));
+        assertFalse(StringUtil.containsUpperCase(" "));
+        assertFalse(StringUtil.containsUpperCase(null));
+        assertFalse(StringUtil.containsUpperCase("teste"));
+        assertFalse(StringUtil.containsUpperCase("123"));
+        assertFalse(StringUtil.containsUpperCase("@!#'"));
+
+        assertTrue(StringUtil.containsUpperCase("Teste"));
+        assertTrue(StringUtil.containsUpperCase("teSte"));
+        assertTrue(StringUtil.containsUpperCase("testE"));
+        assertTrue(StringUtil.containsUpperCase("te1tE"));
+        assertTrue(StringUtil.containsUpperCase("@e1tE"));
+    }
+
+    @Test
+    public void testarSeExisteCaracterMinusculo() {
+        assertFalse(StringUtil.containsLowerCase(""));
+        assertFalse(StringUtil.containsLowerCase(" "));
+        assertFalse(StringUtil.containsLowerCase(null));
+        assertFalse(StringUtil.containsLowerCase("TESTE"));
+        assertFalse(StringUtil.containsLowerCase("123"));
+        assertFalse(StringUtil.containsLowerCase("@!#'"));
+
+        assertTrue(StringUtil.containsLowerCase("TESTe"));
+        assertTrue(StringUtil.containsLowerCase("TEsTE"));
+        assertTrue(StringUtil.containsLowerCase("TESTe"));
+        assertTrue(StringUtil.containsLowerCase("TE1Te"));
+        assertTrue(StringUtil.containsLowerCase("@E1Te"));
+    }
+    
+    @Test
+    public void testarSeExisteCaracterEspecial() {
+        assertFalse(StringUtil.containsSpecialChar(""));
+        assertFalse(StringUtil.containsSpecialChar(" "));
+        assertFalse(StringUtil.containsSpecialChar(null));
+        assertFalse(StringUtil.containsSpecialChar("TESTE"));
+        assertFalse(StringUtil.containsSpecialChar("teste"));
+        assertFalse(StringUtil.containsSpecialChar("Teste"));
+        assertFalse(StringUtil.containsSpecialChar("123"));
+        assertFalse(StringUtil.containsSpecialChar("Tes123te"));
+        
+        assertTrue(StringUtil.containsSpecialChar("Test["));
+        assertTrue(StringUtil.containsSpecialChar("Test!"));
+        assertTrue(StringUtil.containsSpecialChar("Test@"));
+        assertTrue(StringUtil.containsSpecialChar("Test#"));
+        assertTrue(StringUtil.containsSpecialChar("Test$"));
+        assertTrue(StringUtil.containsSpecialChar("Test%"));
+        assertTrue(StringUtil.containsSpecialChar("Test&"));
+        assertTrue(StringUtil.containsSpecialChar("Test*"));
+        assertTrue(StringUtil.containsSpecialChar("Test("));
+        assertTrue(StringUtil.containsSpecialChar("Test)"));
+        assertTrue(StringUtil.containsSpecialChar("Test_"));
+        assertTrue(StringUtil.containsSpecialChar("Test+"));
+        assertTrue(StringUtil.containsSpecialChar("Test="));
+        assertTrue(StringUtil.containsSpecialChar("Test|"));
+        assertTrue(StringUtil.containsSpecialChar("Test<"));
+        assertTrue(StringUtil.containsSpecialChar("Test>"));
+        assertTrue(StringUtil.containsSpecialChar("Test?"));
+        assertTrue(StringUtil.containsSpecialChar("Test{"));
+        assertTrue(StringUtil.containsSpecialChar("Test}"));
+        assertTrue(StringUtil.containsSpecialChar("Test~"));
+        assertTrue(StringUtil.containsSpecialChar("Test["));
+        assertTrue(StringUtil.containsSpecialChar("Test]"));
+        assertTrue(StringUtil.containsSpecialChar("Test-"));
+    }
+    
+    @Test
+    public void testarSeExisteEspacoEmBranco() {
+        assertFalse(StringUtil.containsWhiteSpace(""));
+        assertFalse(StringUtil.containsWhiteSpace(null));
+        assertFalse(StringUtil.containsWhiteSpace("TESTE"));
+        assertFalse(StringUtil.containsWhiteSpace("123"));
+        assertFalse(StringUtil.containsWhiteSpace("@!#'"));
+
+        assertTrue(StringUtil.containsWhiteSpace(" "));
+        assertTrue(StringUtil.containsWhiteSpace("TE STe"));
+        assertTrue(StringUtil.containsWhiteSpace(" TESTe"));
+        assertTrue(StringUtil.containsWhiteSpace("TESTe "));
+        assertTrue(StringUtil.containsWhiteSpace("TE STe "));
     }
 
 }

@@ -9,15 +9,16 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class HomeController {
 
     @GetMapping(value = { "/", "/home" })
-    public String home() {
+    public String paginaHome() {
         return "index";
     }
 
     @GetMapping(value = "/login")
     public String login(Principal principal) {
         boolean isUserLoggedIn = principal != null;
-        return isUserLoggedIn
-                ? "redirect:/home"
+
+        return isUserLoggedIn 
+                ? "redirect:/home" 
                 : "login";
     }
 

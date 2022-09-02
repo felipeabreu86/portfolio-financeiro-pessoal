@@ -6,6 +6,8 @@ import java.util.Locale;
 import java.util.Properties;
 import java.util.Set;
 import java.util.TimeZone;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.springframework.lang.Nullable;
 import org.springframework.util.StringUtils;
@@ -68,6 +70,55 @@ public final class StringUtil {
         }
 
         return path;
+    }
+    
+    /**
+     * Verifica se existe algum caractere maiúsculo na String passada por parâmetro
+     * 
+     * @param value - string a ser verificada
+     * @return True se houver alguma caractere maiúsculo
+     */
+    public static boolean containsUpperCase(String value) {
+        if (isNullOrEmpty(value))
+            return false;
+        return value.chars().filter(Character::isUpperCase).findAny().isPresent();
+    }
+    
+    /**
+     * Verifica se existe algum caractere minúsculo na String passada por parâmetro
+     * 
+     * @param value - string a ser verificada
+     * @return True se houver algum caractere minúsculo
+     */
+    public static boolean containsLowerCase(String value) {
+        if (isNullOrEmpty(value))
+            return false;
+        return value.chars().filter(Character::isLowerCase).findAny().isPresent();
+    }
+    
+    /**
+     * Verifica se existe algum caractere especial na String passada por parâmetro
+     * 
+     * @param value - string a ser verificada
+     * @return True se houver algum caractere especial
+     */
+    public static boolean containsSpecialChar(String value) {
+        if (isNullOrEmpty(value))
+            return false;
+        Matcher hasSpecial = Pattern.compile("[!@#$%&*()_+=|<>?{}\\[\\]~-]").matcher(value);
+        return hasSpecial.find();
+    }
+    
+    /**
+     * Verifica se existe algum espaço em branco na String passada por parâmetro
+     * 
+     * @param value - string a ser verificada
+     * @return True se houver algum espaço em branco
+     */
+    public static boolean containsWhiteSpace(String value) {
+        if (value == null || value.isEmpty())
+            return false;
+        return value.chars().filter(Character::isWhitespace).findAny().isPresent();
     }
 
     /**

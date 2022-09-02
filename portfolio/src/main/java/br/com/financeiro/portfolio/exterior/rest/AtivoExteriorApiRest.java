@@ -17,9 +17,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import br.com.financeiro.portfolio.core.dto.ResponseExteriorApiDto;
 import br.com.financeiro.portfolio.core.util.JsonUtil;
 import br.com.financeiro.portfolio.core.util.StringUtil;
+import br.com.financeiro.portfolio.exterior.rest.dto.ResponseExteriorApiDto;
 
 @RestController
 @RequestMapping(value = "/api/exterior")

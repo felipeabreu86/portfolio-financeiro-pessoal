@@ -4,6 +4,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
 import org.springframework.context.MessageSource;
@@ -15,6 +17,12 @@ import org.springframework.http.MediaType;
 import org.springframework.http.client.reactive.ReactorClientHttpConnector;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import br.com.financeiro.portfolio.core.annotation.validator.password.PasswordValidation;
+import br.com.financeiro.portfolio.core.annotation.validator.password.SenhaCaracterEspecialValidation;
+import br.com.financeiro.portfolio.core.annotation.validator.password.SenhaLetraMaiusculaValidation;
+import br.com.financeiro.portfolio.core.annotation.validator.password.SenhaLetraMinusculaValidation;
+import br.com.financeiro.portfolio.core.annotation.validator.password.SenhaNulaOuVaziaValidation;
+import br.com.financeiro.portfolio.core.annotation.validator.password.SenhaTamanhoPermitido;
 import br.com.financeiro.portfolio.domain.service.AtivoService;
 import br.com.financeiro.portfolio.domain.service.implementation.AtivoB3ServiceImpl;
 import br.com.financeiro.portfolio.domain.service.implementation.AtivoExteriorServiceImpl;
@@ -69,6 +77,17 @@ public class AppConfiguration {
     @Bean(name = "ativoExteriorService")
     public AtivoService obterAtivoExteriorService() {
         return new AtivoExteriorServiceImpl();
+    }
+    
+    @Bean
+    public List<PasswordValidation> obterValidacoesDeSenha() {
+        List<PasswordValidation> validacoes = new ArrayList<PasswordValidation>();
+        validacoes.add(new SenhaNulaOuVaziaValidation());
+        validacoes.add(new SenhaTamanhoPermitido());
+        validacoes.add(new SenhaLetraMaiusculaValidation());
+        validacoes.add(new SenhaLetraMinusculaValidation());
+        validacoes.add(new SenhaCaracterEspecialValidation());
+        return validacoes;
     }
 
 }

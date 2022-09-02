@@ -39,7 +39,7 @@ public class CustomErrorController implements ErrorController {
         request.setAttribute("errordescription", ErroHttpType.obterMensagemPor(status, messageUtil));
 
         // display generic page error
-        return "error";
+        return "404";//"error";
     }
 
     @GetMapping("/favicon.ico")

@@ -16,9 +16,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import br.com.financeiro.portfolio.core.dto.ResponseB3ApiDto;
 import br.com.financeiro.portfolio.core.util.JsonUtil;
 import br.com.financeiro.portfolio.core.util.StringUtil;
+import br.com.financeiro.portfolio.exterior.rest.dto.ResponseB3ApiDto;
 
 @RestController
 @RequestMapping(value = "/api/b3")

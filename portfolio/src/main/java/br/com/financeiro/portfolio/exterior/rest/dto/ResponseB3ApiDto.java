@@ -1,4 +1,4 @@
-package br.com.financeiro.portfolio.core.dto;
+package br.com.financeiro.portfolio.exterior.rest.dto;
 
 import java.math.BigDecimal;
 
