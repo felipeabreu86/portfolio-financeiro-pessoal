@@ -4,6 +4,8 @@ import br.com.financeiro.portfolio.domain.entity.Usuario;
 import io.vavr.control.Either;
 
 public interface UsuarioService {
+    
+    Either<Exception, Usuario> obterUsuarioPelo(String nomeUsuario);
 
     Either<Exception, Usuario> criarNovo(Usuario usuario);
 

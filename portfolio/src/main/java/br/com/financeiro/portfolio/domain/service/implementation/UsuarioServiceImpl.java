@@ -16,6 +16,15 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     @Autowired
     private UsuarioRepository usuarioRepository;
+    
+    /**
+     * 
+     */
+    @Override
+    public Either<Exception, Usuario> obterUsuarioPelo(String nomeUsuario) {
+
+        return usuarioRepository.obterUsuarioPelo(nomeUsuario);
+    }
 
     /**
      * 
@@ -30,7 +39,7 @@ public class UsuarioServiceImpl implements UsuarioService {
         }
 
         // Se o usuário já existir, não criar novo usuário e retornar exceção
-        if (usuarioRepository.obterUsuarioPelo(usuario.getNomeUsuario()).isRight()) {
+        if (obterUsuarioPelo(usuario.getNomeUsuario()).isRight()) {
             return Either.left(new UsuarioExistenteException("Conta já cadastrada."));
         }
 
@@ -50,7 +59,7 @@ public class UsuarioServiceImpl implements UsuarioService {
         }
 
         // Validar se o usuário não existir, não atualizar e retornar exceção
-        Either<Exception, Usuario> usuarioCadastrado = usuarioRepository.obterUsuarioPelo(usuario.getNomeUsuario());
+        Either<Exception, Usuario> usuarioCadastrado = obterUsuarioPelo(usuario.getNomeUsuario());
         if (usuarioCadastrado.isLeft()) {
             return Either.left(usuarioCadastrado.getLeft());
         }
