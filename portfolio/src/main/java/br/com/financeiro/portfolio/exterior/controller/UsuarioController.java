@@ -54,14 +54,9 @@ public class UsuarioController {
     public String recuperarSenha(final Model model, @ModelAttribute UsuarioDto usuarioDto) {
 
         if (usuarioDto != null && !StringUtil.isNullOrEmpty(usuarioDto.getNomeUsuario())) {
-            Either<Exception, Usuario> result = usuarioService.obterUsuarioPelo(usuarioDto.getNomeUsuario());
-            if (result.isRight()) {
-                System.out.println("Usuário existe");
-            } else {
-                System.out.println("Usuário não existe");
-            }
+            // TODO: Implementar chamada ao serviço que realiza a recuperação da senha
         }
-        
+
         model.addAttribute("usuarioDto", new UsuarioDto());
 
         return "forgot-password";
