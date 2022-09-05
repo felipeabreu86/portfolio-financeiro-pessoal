@@ -30,7 +30,8 @@ public class WebSecurityConfiguration implements HttpSessionListener {
                 "/vendor/**", 
                 "/login/**",
                 "/user/forgot-password",
-                "/user/register-user" };
+                "/user/register-user",
+                "/user/change-password" };
 
         return http
                 .authorizeRequests()

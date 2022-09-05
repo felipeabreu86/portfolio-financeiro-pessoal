@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,6 +16,8 @@ import org.springframework.context.support.ReloadableResourceBundleMessageSource
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.client.reactive.ReactorClientHttpConnector;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import br.com.financeiro.portfolio.core.annotation.validator.password.PasswordValidation;
@@ -88,6 +91,23 @@ public class AppConfiguration {
         validacoes.add(new SenhaLetraMinusculaValidation());
         validacoes.add(new SenhaCaracterEspecialValidation());
         return validacoes;
+    }
+    
+    @Bean
+    public JavaMailSender getJavaMailSender(@Qualifier("envProperties") Properties env) {
+        JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
+        mailSender.setHost("smtp.gmail.com");
+        mailSender.setPort(465);        
+        mailSender.setUsername("portfoliofinanceiro.contato@gmail.com");
+        mailSender.setPassword(env.getProperty("mail.password"));
+        
+        Properties props = mailSender.getJavaMailProperties();
+        props.put("mail.transport.protocol", "smtps");
+        props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.starttls.enable", "true");
+        props.put("mail.smtp.starttls.timeout", 8000);
+        
+        return mailSender;
     }
 
 }

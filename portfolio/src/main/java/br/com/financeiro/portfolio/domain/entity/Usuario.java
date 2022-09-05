@@ -14,9 +14,11 @@ import io.netty.util.internal.StringUtil;
 @Entity
 @Table(name = "users")
 public class Usuario {
+    
+    // Atributos
 
     @Id
-    @Column(name = "username")
+    @Column(name = "username", unique = true)
     private String nomeUsuario;
 
     @Column(name = "name")
@@ -30,6 +32,8 @@ public class Usuario {
 
     @Column(name = "enabled")
     private Boolean status;
+    
+    // Getters e Setters
 
     public String getNomeUsuario() {
         return nomeUsuario;
@@ -70,6 +74,8 @@ public class Usuario {
     public void setSenha(String senha) {
         this.senha = new BCryptPasswordEncoder().encode(Objects.requireNonNull(senha));
     }
+    
+    // Métodos
 
     public boolean isValido() {
         return !StringUtil.isNullOrEmpty(nomeUsuario) 
@@ -77,6 +83,33 @@ public class Usuario {
                 && !StringUtil.isNullOrEmpty(sobrenome) 
                 && !StringUtil.isNullOrEmpty(senha) 
                 && status != null;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(nome, nomeUsuario, senha, sobrenome, status);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Usuario other = (Usuario) obj;
+        return Objects.equals(nome, other.nome) 
+                && Objects.equals(nomeUsuario, other.nomeUsuario)
+                && Objects.equals(sobrenome, other.sobrenome)
+                && Objects.equals(status, other.status);
+    }
+    
+    @Override
+    public String toString() {
+        final StringBuilder builder = new StringBuilder();
+        builder.append("Usuário [e-mail=").append(nomeUsuario).append("]").append("[status=").append(status ? "ativo" : "inativo").append("]");
+        return builder.toString();
     }
 
 }

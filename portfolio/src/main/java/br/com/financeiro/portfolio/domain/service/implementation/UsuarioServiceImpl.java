@@ -1,14 +1,20 @@
 package br.com.financeiro.portfolio.domain.service.implementation;
 
+import java.util.Calendar;
+import java.util.UUID;
+
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.com.financeiro.portfolio.core.exception.UsuarioExistenteException;
+import br.com.financeiro.portfolio.domain.entity.PasswordResetToken;
 import br.com.financeiro.portfolio.domain.entity.Usuario;
+import br.com.financeiro.portfolio.domain.repository.PasswordResetTokenRepository;
 import br.com.financeiro.portfolio.domain.repository.UsuarioRepository;
 import br.com.financeiro.portfolio.domain.service.UsuarioService;
+import io.netty.util.internal.StringUtil;
 import io.vavr.control.Either;
 
 @Service
@@ -17,12 +23,14 @@ public class UsuarioServiceImpl implements UsuarioService {
     @Autowired
     private UsuarioRepository usuarioRepository;
     
+    @Autowired
+    private PasswordResetTokenRepository passwordResetTokenRepository;
+    
     /**
      * 
      */
     @Override
     public Either<Exception, Usuario> obterUsuarioPelo(String nomeUsuario) {
-
         return usuarioRepository.obterUsuarioPelo(nomeUsuario);
     }
 
@@ -80,6 +88,46 @@ public class UsuarioServiceImpl implements UsuarioService {
         }
 
         return usuarioRepository.deletar(usuario);
+    }
+
+    /**
+     * 
+     */
+    @Override
+    public Either<Exception, PasswordResetToken> criarTokenDeRecuperacaoDeSenha(Usuario usuario) {
+        
+        PasswordResetToken myToken = new PasswordResetToken(UUID.randomUUID().toString(), usuario);        
+        Either<Exception, Boolean> result = passwordResetTokenRepository.salvar(myToken);
+        
+        return result.isRight()
+                ? Either.right(myToken)
+                : Either.left(result.getLeft());
+    }
+
+    /**
+     * 
+     */
+    @Override
+    public Either<Exception, PasswordResetToken> validarTokenDeRecuperacaoDeSenha(String usuario, String token) {
+
+        if (StringUtil.isNullOrEmpty(usuario) || StringUtil.isNullOrEmpty(token)) {
+            return Either.left(new IllegalArgumentException("Usuário ou Token inválidos."));
+        }
+
+        Either<Exception, PasswordResetToken> tokenResult = passwordResetTokenRepository.obterPasswordResetTokenPelo(token.trim());
+        if (tokenResult.isLeft()) {
+            return Either.left(new Exception("Token inexistente."));
+        }
+
+        if (tokenResult.get().getExpiryDate().before(Calendar.getInstance().getTime())) {
+            return Either.left(new Exception("Token expirado."));
+        }
+
+        if (!tokenResult.get().getUser().getNomeUsuario().trim().equals(usuario.trim())) {
+            return Either.left(new Exception("Token inválido."));
+        }
+
+        return Either.right(tokenResult.get());
     }
 
 }
