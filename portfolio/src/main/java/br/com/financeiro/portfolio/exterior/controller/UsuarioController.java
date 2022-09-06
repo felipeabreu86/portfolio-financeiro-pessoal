@@ -80,14 +80,14 @@ public class UsuarioController {
     }
     
     @GetMapping(value = "/change-password")
-    public String recuperarSenha(final Model model, @RequestParam("user") String user,
+    public String recuperarSenha(final Model model, @RequestParam("email") String email,
             @RequestParam("token") String token) {
         
         String view = "";
-        Either<Exception, PasswordResetToken> tokenResult = usuarioService.validarTokenDeRecuperacaoDeSenha(user, token);
+        Either<Exception, PasswordResetToken> tokenResult = usuarioService.validarTokenDeRecuperacaoDeSenha(email, token);
 
         if (tokenResult.isRight()) {
-            model.addAttribute("alterarSenhaDto", new AlterarSenhaDto(user, token));
+            model.addAttribute("alterarSenhaDto", new AlterarSenhaDto(email, token));
             view = "change-password";
         } else {
             model
@@ -102,37 +102,23 @@ public class UsuarioController {
     @PostMapping(value = "/change-password")
     public String salvarSenha(final Model model, @ModelAttribute @Valid AlterarSenhaDto alterarSenhaDto,
             BindingResult bindingResult) {
-        
+
         String view = "change-password";
 
-        // Validação dos itens do formulário
         if (!bindingResult.hasErrors()) {
-            Either<Exception, PasswordResetToken> tokenResult = usuarioService
-                    .validarTokenDeRecuperacaoDeSenha(alterarSenhaDto.getEmail(), alterarSenhaDto.getToken());
+            Either<Exception, Usuario> result = usuarioService.atualizarSenhaDoUsuarioPor(
+                    alterarSenhaDto.getEmail(),
+                    alterarSenhaDto.getSenha(), 
+                    alterarSenhaDto.getToken());
 
-            // Validação do Token
-            if (tokenResult.isRight()) {
-                Either<Exception, Usuario> usuarioResult = usuarioService.obterUsuarioPelo(alterarSenhaDto.getEmail());
-
-                // Validação do usuário
-                if (usuarioResult.isRight()) {
-                    Usuario usuario = usuarioResult.get();
-                    usuario.setSenha(alterarSenhaDto.getSenha());
-
-                    // Validação da atualização da senha do usuário
-                    if (usuarioService.atualizar(usuario).isRight()) {
-                        view = "redirect:/login";
-                    }
-                }
-            }
-
-            // Adicionar mensagem de erro ao usuário em caso de erro durante a atualização da senha
-            if (view.equals("change-password")) {
-                model.addAttribute("errorMessage", "Houve um erro ao se tentar atualizar a senha.");
+            if (result.isRight()) {
+                view = "redirect:/login";
+            } else {
+                model.addAttribute("errorMessage", "Houve um erro durante a tentativa de atualização da senha.");
             }
         }
 
         return view;
     }
-
+    
 }

@@ -14,6 +14,8 @@ public interface UsuarioService {
 
     Either<Exception, Boolean> deletar(Usuario usuario);
 
+    Either<Exception, Usuario> atualizarSenhaDoUsuarioPor(String emailCadastrado, String novaSenha, String token);
+
     Either<Exception, PasswordResetToken> criarTokenDeRecuperacaoDeSenha(Usuario usuario);
 
     Either<Exception, PasswordResetToken> validarTokenDeRecuperacaoDeSenha(String usuario, String token);

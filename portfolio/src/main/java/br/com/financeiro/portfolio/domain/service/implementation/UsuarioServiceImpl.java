@@ -66,8 +66,9 @@ public class UsuarioServiceImpl implements UsuarioService {
             return Either.left(new IllegalArgumentException("Dados inválidos!"));
         }
 
-        // Validar se o usuário não existir, não atualizar e retornar exceção
+        // Se o usuário não existir, não atualizar e retornar exceção
         Either<Exception, Usuario> usuarioCadastrado = obterUsuarioPelo(usuario.getNomeUsuario());
+
         if (usuarioCadastrado.isLeft()) {
             return Either.left(usuarioCadastrado.getLeft());
         }
@@ -115,6 +116,7 @@ public class UsuarioServiceImpl implements UsuarioService {
         }
 
         Either<Exception, PasswordResetToken> tokenResult = passwordResetTokenRepository.obterPasswordResetTokenPelo(token.trim());
+        
         if (tokenResult.isLeft()) {
             return Either.left(new Exception("Token inexistente."));
         }
@@ -128,6 +130,34 @@ public class UsuarioServiceImpl implements UsuarioService {
         }
 
         return Either.right(tokenResult.get());
+    }
+
+    @Override
+    public Either<Exception, Usuario> atualizarSenhaDoUsuarioPor(String emailCadastrado, String novaSenha,
+            String token) {
+
+        Either<Exception, PasswordResetToken> tokenResult = validarTokenDeRecuperacaoDeSenha(emailCadastrado, token);
+
+        if (tokenResult.isLeft()) {
+            return Either.left(tokenResult.getLeft());
+        }
+
+        Either<Exception, Usuario> usuarioResult = obterUsuarioPelo(emailCadastrado);
+
+        if (usuarioResult.isLeft()) {
+            return Either.left(usuarioResult.getLeft());
+        }
+
+        Usuario usuario = usuarioResult.get();
+        usuario.setSenha(novaSenha);
+
+        Either<Exception, Usuario> atualizarResult = atualizar(usuario);
+
+        if (atualizarResult.isLeft()) {
+            return Either.left(atualizarResult.getLeft());
+        }
+
+        return Either.right(usuario);
     }
 
 }

@@ -46,7 +46,7 @@ public class EmailServiceImpl implements EmailService {
     private MimeMessage montarEmailDeRecuperacaoSenha(final String contextPath, final String token, final Usuario user)
             throws MessagingException {
         
-        final String url = contextPath + "/user/change-password?user=" + user.getNomeUsuario() + "&token=" + token;
+        final String url = contextPath + "/user/change-password?email=" + user.getNomeUsuario() + "&token=" + token;
 
         String dataHora = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss")
                 .format(Calendar.getInstance().getTime())
@@ -57,7 +57,8 @@ public class EmailServiceImpl implements EmailService {
                 .append("Recebemos uma solicitação para restaurar sua senha de acesso em nosso site.<br/>")
                 .append("Ela ocorreu em: <b>" + dataHora + "</b>.<br/><br/>")
                 .append("Se você reconhece essa ação, clique no link abaixo para prosseguir:<br/><br/>")
-                .append("<a href='" + url + "'>REDEFINIR SENHA</a><br/><br/>").append("Atenciosamente,<br/>")
+                .append("<a href='" + url + "'>REDEFINIR SENHA</a><br/><br/>")
+                .append("Atenciosamente,<br/>")
                 .append("<b>Equipe Portfólio Financeiro</b>")
                 .toString();
 
