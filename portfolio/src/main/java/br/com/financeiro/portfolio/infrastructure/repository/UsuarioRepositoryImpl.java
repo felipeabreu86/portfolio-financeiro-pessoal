@@ -1,9 +1,9 @@
 package br.com.financeiro.portfolio.infrastructure.repository;
 
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.stereotype.Component;
 
 import br.com.financeiro.portfolio.core.exception.UsuarioNaoEncontradoException;
@@ -20,9 +20,9 @@ public class UsuarioRepositoryImpl implements UsuarioRepository {
 
     @Override
     public Either<Exception, Usuario> obterUsuarioPelo(String nomeUsuario) {
+
         try {
-            Usuario usuario = usuarioDao.findByNomeUsuario(nomeUsuario).get();
-            return Either.right(usuario);
+            return Either.right(usuarioDao.findByNomeUsuario(nomeUsuario).get());
         } catch (NoSuchElementException e) {
             return Either.left(new UsuarioNaoEncontradoException("Usuário não encontrado", e));
         } catch (Exception e) {
@@ -32,21 +32,20 @@ public class UsuarioRepositoryImpl implements UsuarioRepository {
 
     @Override
     public Either<Exception, Usuario> salvarOuAtualizar(Usuario usuario) {
+
         try {
-            usuario = usuarioDao.save(usuario);
-            return Either.right(usuario);
-        } catch (IllegalArgumentException | InvalidDataAccessApiUsageException e) {
-            return Either.left(e);
+            return Either.right(usuarioDao.save(usuario));
         } catch (Exception e) {
             return Either.left(e);
         }
     }
 
     @Override
-    public Either<Exception, Boolean> deletar(Usuario usuario) {
+    public Either<Exception, Integer> deletar(Usuario usuario) {
+
         try {
-            usuarioDao.delete(usuario);
-            return Either.right(true);
+            Optional<Integer> result = usuarioDao.deletar(usuario.getNomeUsuario());
+            return Either.right(result.isPresent() ? result.get() : 0);
         } catch (Exception e) {
             return Either.left(e);
         }

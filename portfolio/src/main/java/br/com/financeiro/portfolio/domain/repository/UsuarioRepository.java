@@ -9,6 +9,6 @@ public interface UsuarioRepository {
 
     Either<Exception, Usuario> salvarOuAtualizar(Usuario usuario);
 
-    Either<Exception, Boolean> deletar(Usuario usuario);
+    Either<Exception, Integer> deletar(Usuario usuario);
 
 }

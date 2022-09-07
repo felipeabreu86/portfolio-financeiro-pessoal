@@ -71,7 +71,7 @@ public final class StringUtil {
 
         return path;
     }
-    
+
     /**
      * Verifica se existe algum caractere maiúsculo na String passada por parâmetro
      * 
@@ -83,7 +83,7 @@ public final class StringUtil {
             return false;
         return value.chars().filter(Character::isUpperCase).findAny().isPresent();
     }
-    
+
     /**
      * Verifica se existe algum caractere minúsculo na String passada por parâmetro
      * 
@@ -95,7 +95,7 @@ public final class StringUtil {
             return false;
         return value.chars().filter(Character::isLowerCase).findAny().isPresent();
     }
-    
+
     /**
      * Verifica se existe algum caractere especial na String passada por parâmetro
      * 
@@ -108,7 +108,7 @@ public final class StringUtil {
         Matcher hasSpecial = Pattern.compile("[!@#$%&*()_+=|<>?{}\\[\\]~-]").matcher(value);
         return hasSpecial.find();
     }
-    
+
     /**
      * Verifica se existe algum espaço em branco na String passada por parâmetro
      * 

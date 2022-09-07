@@ -106,7 +106,7 @@ public class UsuarioController {
         String view = "change-password";
 
         if (!bindingResult.hasErrors()) {
-            Either<Exception, Usuario> result = usuarioService.atualizarSenhaDoUsuarioPor(
+            Either<Exception, Usuario> result = usuarioService.atualizarSenhaDoUsuario(
                     alterarSenhaDto.getEmail(),
                     alterarSenhaDto.getSenha(), 
                     alterarSenhaDto.getToken());

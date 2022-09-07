@@ -81,7 +81,7 @@ public class UsuarioServiceImpl implements UsuarioService {
      */
     @Override
     @Transactional
-    public Either<Exception, Boolean> deletar(Usuario usuario) {
+    public Either<Exception, Integer> deletar(Usuario usuario) {
 
         // Validar usuário passado por parâmetro
         if (usuario == null || !usuario.isValido()) {
@@ -90,50 +90,10 @@ public class UsuarioServiceImpl implements UsuarioService {
 
         return usuarioRepository.deletar(usuario);
     }
-
-    /**
-     * 
-     */
+    
     @Override
-    public Either<Exception, PasswordResetToken> criarTokenDeRecuperacaoDeSenha(Usuario usuario) {
-        
-        PasswordResetToken myToken = new PasswordResetToken(UUID.randomUUID().toString(), usuario);        
-        Either<Exception, Boolean> result = passwordResetTokenRepository.salvar(myToken);
-        
-        return result.isRight()
-                ? Either.right(myToken)
-                : Either.left(result.getLeft());
-    }
-
-    /**
-     * 
-     */
-    @Override
-    public Either<Exception, PasswordResetToken> validarTokenDeRecuperacaoDeSenha(String usuario, String token) {
-
-        if (StringUtil.isNullOrEmpty(usuario) || StringUtil.isNullOrEmpty(token)) {
-            return Either.left(new IllegalArgumentException("Usuário ou Token inválidos."));
-        }
-
-        Either<Exception, PasswordResetToken> tokenResult = passwordResetTokenRepository.obterPasswordResetTokenPelo(token.trim());
-        
-        if (tokenResult.isLeft()) {
-            return Either.left(new Exception("Token inexistente."));
-        }
-
-        if (tokenResult.get().getExpiryDate().before(Calendar.getInstance().getTime())) {
-            return Either.left(new Exception("Token expirado."));
-        }
-
-        if (!tokenResult.get().getUser().getNomeUsuario().trim().equals(usuario.trim())) {
-            return Either.left(new Exception("Token inválido."));
-        }
-
-        return Either.right(tokenResult.get());
-    }
-
-    @Override
-    public Either<Exception, Usuario> atualizarSenhaDoUsuarioPor(String emailCadastrado, String novaSenha,
+    @Transactional
+    public Either<Exception, Usuario> atualizarSenhaDoUsuario(String emailCadastrado, String novaSenha,
             String token) {
 
         Either<Exception, PasswordResetToken> tokenResult = validarTokenDeRecuperacaoDeSenha(emailCadastrado, token);
@@ -151,13 +111,48 @@ public class UsuarioServiceImpl implements UsuarioService {
         Usuario usuario = usuarioResult.get();
         usuario.setSenha(novaSenha);
 
-        Either<Exception, Usuario> atualizarResult = atualizar(usuario);
+        return usuarioRepository.salvarOuAtualizar(usuario);
+    }
 
-        if (atualizarResult.isLeft()) {
-            return Either.left(atualizarResult.getLeft());
+    /**
+     * 
+     */
+    @Override
+    @Transactional
+    public Either<Exception, PasswordResetToken> criarTokenDeRecuperacaoDeSenha(Usuario usuario) {
+
+        passwordResetTokenRepository.apagarTokensExpiradosDesde(Calendar.getInstance().getTime());
+
+        PasswordResetToken myToken = new PasswordResetToken(UUID.randomUUID().toString(), usuario);
+
+        return passwordResetTokenRepository.salvar(myToken);
+    }
+
+    /**
+     * 
+     */
+    @Override
+    public Either<Exception, PasswordResetToken> validarTokenDeRecuperacaoDeSenha(String usuario, String token) {
+
+        if (StringUtil.isNullOrEmpty(usuario) || StringUtil.isNullOrEmpty(token)) {
+            return Either.left(new IllegalArgumentException("Usuário ou Token inválidos."));
         }
 
-        return Either.right(usuario);
+        Either<Exception, PasswordResetToken> tokenResult = passwordResetTokenRepository.obterPasswordResetTokenPelo(token.trim());
+        
+        if (tokenResult.isLeft()) {
+            return Either.left(tokenResult.getLeft());
+        }
+
+        if (tokenResult.get().getExpiryDate().before(Calendar.getInstance().getTime())) {
+            return Either.left(new Exception("Token expirado."));
+        }
+
+        if (!tokenResult.get().getUser().getNomeUsuario().trim().equals(usuario.trim())) {
+            return Either.left(new Exception("Token inválido."));
+        }
+
+        return tokenResult;
     }
 
 }

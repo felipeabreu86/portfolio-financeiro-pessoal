@@ -28,6 +28,8 @@ public class Ativo {
     @Column(nullable = false, unique = true)
     private String codigoAtivo;
 
+    // Construtores
+
     public Ativo() {
         super();
     }
@@ -37,6 +39,8 @@ public class Ativo {
         this.tipoAtivo = Objects.requireNonNull(tipoDeAtivo);
         this.codigoAtivo = this.getTipoAtivo().validar(codigoAtivo);
     }
+
+    // Getters e Setters
 
     public long getId() {
         return id;
@@ -51,9 +55,35 @@ public class Ativo {
     }
 
     public boolean isValido() {
-        return (this.tipoAtivo == null || this.codigoAtivo == null)
-                ? false
-                : true;
+        return (this.tipoAtivo == null || this.codigoAtivo == null) ? false : true;
+    }
+
+    // Métodos
+
+    @Override
+    public String toString() {
+        final StringBuilder builder = new StringBuilder();
+        builder
+            .append("Ativo [codigo=").append(this.codigoAtivo).append("]")
+            .append("[tipo=").append(this.tipoAtivo.toString()).append("]");
+        return builder.toString();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.codigoAtivo, this.id, this.tipoAtivo);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Ativo other = (Ativo) obj;
+        return Objects.equals(codigoAtivo, other.codigoAtivo) && tipoAtivo == other.tipoAtivo;
     }
 
 }

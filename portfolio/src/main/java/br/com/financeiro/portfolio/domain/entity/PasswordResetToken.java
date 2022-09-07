@@ -14,8 +14,6 @@ import javax.persistence.OneToOne;
 @Entity
 public class PasswordResetToken {
 
-    // Atributos
-
     /**
      * O Token de recuperação de senha é válido por 24 horas
      */
@@ -80,6 +78,8 @@ public class PasswordResetToken {
         this.expiryDate = expiryDate;
     }
 
+    // Métodos
+    
     private Date calculateExpiryDate(final int expiryTimeInMinutes) {
         final Calendar cal = Calendar.getInstance();
         cal.setTimeInMillis(new Date().getTime());
@@ -91,8 +91,6 @@ public class PasswordResetToken {
         this.token = token;
         this.expiryDate = calculateExpiryDate(EXPIRATION);
     }
-
-    // Métodos
 
     @Override
     public int hashCode() {
@@ -143,7 +141,9 @@ public class PasswordResetToken {
     @Override
     public String toString() {
         final StringBuilder builder = new StringBuilder();
-        builder.append("Token [String=").append(token).append("]").append("[Expires").append(expiryDate).append("]");
+        builder
+            .append("Token [String=").append(token).append("]")
+            .append("[Expires").append(expiryDate).append("]");
         return builder.toString();
     }
 

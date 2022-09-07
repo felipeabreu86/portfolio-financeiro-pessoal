@@ -1,5 +1,6 @@
 package br.com.financeiro.portfolio.infrastructure.repository;
 
+import java.util.Date;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,10 +18,10 @@ public class PasswordResetTokenRepositoryImpl implements PasswordResetTokenRepos
     private PasswordResetTokenDao passwordResetTokenDao;
 
     @Override
-    public Either<Exception, Boolean> salvar(PasswordResetToken passwordResetToken) {
+    public Either<Exception, PasswordResetToken> salvar(PasswordResetToken passwordResetToken) {
+
         try {
-            passwordResetTokenDao.save(passwordResetToken);
-            return Either.right(true);
+            return Either.right(passwordResetTokenDao.save(passwordResetToken));
         } catch (Exception e) {
             return Either.left(e);
         }
@@ -28,13 +29,20 @@ public class PasswordResetTokenRepositoryImpl implements PasswordResetTokenRepos
 
     @Override
     public Either<Exception, PasswordResetToken> obterPasswordResetTokenPelo(String token) {
+
+        Optional<PasswordResetToken> opt = passwordResetTokenDao.findByToken(token);
+
+        return opt.isPresent() 
+                ? Either.right(opt.get()) 
+                : Either.left(new Exception("Token não encontrado."));
+    }
+    
+    @Override
+    public Either<Exception, Integer> apagarTokensExpiradosDesde(Date now) {
+
         try {
-            Optional<PasswordResetToken> opt = passwordResetTokenDao.findByToken(token);
-            if (opt.isPresent()) {
-                return Either.right(opt.get());
-            } else {
-                return Either.left(new Exception("Token não encontrado."));
-            }
+            Optional<Integer> result = passwordResetTokenDao.deleteAllExpiredSince(now);
+            return Either.right(result.isPresent() ? result.get() : 0);
         } catch (Exception e) {
             return Either.left(e);
         }

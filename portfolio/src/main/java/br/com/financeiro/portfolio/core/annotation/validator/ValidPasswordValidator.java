@@ -23,7 +23,8 @@ public class ValidPasswordValidator implements ConstraintValidator<ValidPassword
         
         for (PasswordValidation passwordValidation : validacoesSenha) {
             if (!passwordValidation.isValid(password)) {
-                isValid = false;                
+                isValid = false;
+                
                 context
                     .buildConstraintViolationWithTemplate(passwordValidation.getErrorMessage())
                     .addConstraintViolation()

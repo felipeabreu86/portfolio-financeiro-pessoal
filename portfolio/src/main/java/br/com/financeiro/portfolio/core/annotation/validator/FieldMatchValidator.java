@@ -25,8 +25,8 @@ public class FieldMatchValidator implements ConstraintValidator<FieldMatch, Obje
         boolean valid = true;
         
         try {
-            final Object firstObj = BeanUtils.getProperty(value, firstFieldName);
-            final Object secondObj = BeanUtils.getProperty(value, secondFieldName);
+            final Object firstObj = BeanUtils.getProperty(value, this.firstFieldName);
+            final Object secondObj = BeanUtils.getProperty(value, this.secondFieldName);
             valid = firstObj == null && secondObj == null || firstObj != null && firstObj.equals(secondObj);
         } catch (final Exception ignore) {
             valid = false;
@@ -34,8 +34,8 @@ public class FieldMatchValidator implements ConstraintValidator<FieldMatch, Obje
 
         if (!valid) {
             context
-                .buildConstraintViolationWithTemplate(message)
-                .addPropertyNode(firstFieldName)
+                .buildConstraintViolationWithTemplate(this.message)
+                .addPropertyNode(this.firstFieldName)
                 .addConstraintViolation()
                 .disableDefaultConstraintViolation();
         }

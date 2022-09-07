@@ -14,8 +14,6 @@ import io.netty.util.internal.StringUtil;
 @Entity
 @Table(name = "users")
 public class Usuario {
-    
-    // Atributos
 
     @Id
     @Column(name = "username", unique = true)
@@ -78,16 +76,16 @@ public class Usuario {
     // Métodos
 
     public boolean isValido() {
-        return !StringUtil.isNullOrEmpty(nomeUsuario) 
-                && !StringUtil.isNullOrEmpty(nome)
-                && !StringUtil.isNullOrEmpty(sobrenome) 
-                && !StringUtil.isNullOrEmpty(senha) 
+        return !StringUtil.isNullOrEmpty(this.nomeUsuario) 
+                && !StringUtil.isNullOrEmpty(this.nome)
+                && !StringUtil.isNullOrEmpty(this.sobrenome) 
+                && !StringUtil.isNullOrEmpty(this.senha) 
                 && status != null;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(nome, nomeUsuario, senha, sobrenome, status);
+        return Objects.hash(this.nome, this.nomeUsuario, this.senha, this.sobrenome, this.status);
     }
 
     @Override
@@ -99,16 +97,18 @@ public class Usuario {
         if (getClass() != obj.getClass())
             return false;
         Usuario other = (Usuario) obj;
-        return Objects.equals(nome, other.nome) 
-                && Objects.equals(nomeUsuario, other.nomeUsuario)
-                && Objects.equals(sobrenome, other.sobrenome)
-                && Objects.equals(status, other.status);
+        return Objects.equals(this.nome, other.nome) 
+                && Objects.equals(this.nomeUsuario, other.nomeUsuario)
+                && Objects.equals(this.sobrenome, other.sobrenome)
+                && Objects.equals(this.status, other.status);
     }
     
     @Override
     public String toString() {
         final StringBuilder builder = new StringBuilder();
-        builder.append("Usuário [e-mail=").append(nomeUsuario).append("]").append("[status=").append(status ? "ativo" : "inativo").append("]");
+        builder
+            .append("Usuário [e-mail=").append(nomeUsuario).append("]")
+            .append("[status=").append(status ? "ativo" : "inativo").append("]");
         return builder.toString();
     }
 
