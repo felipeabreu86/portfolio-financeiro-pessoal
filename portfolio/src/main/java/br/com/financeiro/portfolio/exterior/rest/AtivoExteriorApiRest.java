@@ -8,6 +8,7 @@ import java.util.Properties;
 import org.apache.commons.validator.routines.UrlValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -27,6 +28,9 @@ public class AtivoExteriorApiRest {
         
     @Autowired
     private WebClient webClient;
+    
+    @Autowired
+    private Environment appProperties;
 
     @Autowired
     @Qualifier("envProperties")
@@ -51,7 +55,7 @@ public class AtivoExteriorApiRest {
                 ? periodo.get() 
                 : 1;
         
-        String exteriorApiUri = envProperties.getProperty("yahoo.api.uri");
+        String exteriorApiUri = appProperties.getProperty("yahoo.api.uri");
         
         String[] schemes = { "https" };
         
@@ -61,7 +65,7 @@ public class AtivoExteriorApiRest {
                     .uri(exteriorApiUri)
                     .header("content-type", "application/x-www-form-urlencoded")
                     .header("X-RapidAPI-Key", envProperties.getProperty("yahoo.api.key"))
-                    .header("X-RapidAPI-Host", envProperties.getProperty("yahoo.api.host"))
+                    .header("X-RapidAPI-Host", appProperties.getProperty("yahoo.api.host"))
                     .bodyValue("symbol=" + codigoAtivo + "&period=" + periodoDias + "d")
                     .retrieve()
                     .bodyToMono(String.class)
