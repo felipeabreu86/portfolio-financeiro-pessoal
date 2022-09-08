@@ -5,10 +5,10 @@ import io.vavr.control.Either;
 
 public interface UsuarioRepository {
 
-    Either<Exception, Usuario> obterUsuarioPelo(String nomeUsuario);
+    Either<Exception, Usuario> obterUsuarioPelo(final String nomeUsuario);
 
-    Either<Exception, Usuario> salvarOuAtualizar(Usuario usuario);
+    Either<Exception, Usuario> salvarOuAtualizar(final Usuario usuario);
 
-    Either<Exception, Integer> deletar(Usuario usuario);
+    Either<Exception, Integer> deletar(final Usuario usuario);
 
 }

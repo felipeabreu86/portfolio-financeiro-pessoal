@@ -39,7 +39,10 @@ public class UsuarioController {
     }
 
     @PostMapping(value = "/register-user")
-    public String registrarNovoUsuario(final Model model, @ModelAttribute @Valid UsuarioDto usuarioDto, BindingResult bindingResult) {
+    public String registrarNovoUsuario(
+            final Model model, 
+            final @ModelAttribute @Valid UsuarioDto usuarioDto, 
+            final BindingResult bindingResult) {
 
         if (!bindingResult.hasErrors()) {            
             usuarioService
@@ -59,7 +62,11 @@ public class UsuarioController {
     }
     
     @PostMapping(value = "/forgot-password")
-    public String recuperarSenha(final HttpServletRequest request, final Model model, @ModelAttribute @Valid RecuperarSenhaDto recuperarSenhaDto, BindingResult bindingResult) {
+    public String recuperarSenha(
+            final HttpServletRequest request, 
+            final Model model, 
+            final @ModelAttribute @Valid RecuperarSenhaDto recuperarSenhaDto, 
+            final BindingResult bindingResult) {
 
         if (!bindingResult.hasErrors()) {
             Either<Exception, Usuario> userResult = usuarioService.obterUsuarioPelo(recuperarSenhaDto.getEmail());
@@ -80,8 +87,10 @@ public class UsuarioController {
     }
     
     @GetMapping(value = "/change-password")
-    public String recuperarSenha(final Model model, @RequestParam("email") String email,
-            @RequestParam("token") String token) {
+    public String recuperarSenha(
+            final Model model, 
+            final @RequestParam("email") String email,
+            final @RequestParam("token") String token) {
         
         String view = "";
         Either<Exception, PasswordResetToken> tokenResult = usuarioService.validarTokenDeRecuperacaoDeSenha(email, token);
@@ -100,8 +109,10 @@ public class UsuarioController {
     }
     
     @PostMapping(value = "/change-password")
-    public String salvarSenha(final Model model, @ModelAttribute @Valid AlterarSenhaDto alterarSenhaDto,
-            BindingResult bindingResult) {
+    public String salvarSenha(
+            final Model model, 
+            final @ModelAttribute @Valid AlterarSenhaDto alterarSenhaDto,
+            final BindingResult bindingResult) {
 
         String view = "change-password";
 

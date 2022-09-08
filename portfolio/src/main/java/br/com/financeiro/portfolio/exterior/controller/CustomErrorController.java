@@ -27,7 +27,8 @@ public class CustomErrorController implements ErrorController {
     private MessageUtil messageUtil;
 
     @RequestMapping("/error")
-    public String handleError(HttpServletRequest request) {
+    public String handleError(final HttpServletRequest request) {
+        
         Map<String, Object> attrs = errorAttributes
                 .getErrorAttributes(new ServletWebRequest(request), ErrorAttributeOptions.defaults());
 

@@ -18,7 +18,7 @@ public class PasswordResetTokenRepositoryImpl implements PasswordResetTokenRepos
     private PasswordResetTokenDao passwordResetTokenDao;
 
     @Override
-    public Either<Exception, PasswordResetToken> salvar(PasswordResetToken passwordResetToken) {
+    public Either<Exception, PasswordResetToken> salvar(final PasswordResetToken passwordResetToken) {
 
         try {
             return Either.right(passwordResetTokenDao.save(passwordResetToken));
@@ -28,7 +28,7 @@ public class PasswordResetTokenRepositoryImpl implements PasswordResetTokenRepos
     }
 
     @Override
-    public Either<Exception, PasswordResetToken> obterPasswordResetTokenPelo(String token) {
+    public Either<Exception, PasswordResetToken> obterPasswordResetTokenPelo(final String token) {
 
         Optional<PasswordResetToken> opt = passwordResetTokenDao.findByToken(token);
 
@@ -38,7 +38,7 @@ public class PasswordResetTokenRepositoryImpl implements PasswordResetTokenRepos
     }
     
     @Override
-    public Either<Exception, Integer> apagarTokensExpiradosDesde(Date now) {
+    public Either<Exception, Integer> apagarTokensExpiradosDesde(final Date now) {
 
         try {
             Optional<Integer> result = passwordResetTokenDao.deleteAllExpiredSince(now);

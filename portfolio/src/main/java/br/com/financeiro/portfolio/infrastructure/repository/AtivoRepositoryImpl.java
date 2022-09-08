@@ -22,7 +22,7 @@ public class AtivoRepositoryImpl implements AtivoRepository {
     }
 
     @Override
-    public Optional<Ativo> salvar(Ativo ativo) {
+    public Optional<Ativo> salvar(final Ativo ativo) {
         return Optional.of(ativoDao.save(ativo));
     }
 

@@ -23,16 +23,19 @@ public class EmailServiceImpl implements EmailService {
     private JavaMailSender mailSender;
 
     @Override
-    public Either<Exception, Boolean> enviarEmailRecuperacaoSenha(final HttpServletRequest request, final String token,
+    public Either<Exception, Integer> enviarEmailRecuperacaoSenha(
+            final HttpServletRequest request, 
+            final String token,
             final Usuario usuario) {
         
         try {
             final String appUrl = "http://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
-            mailSender.send(montarEmailDeRecuperacaoSenha(appUrl, token, usuario));
-            return Either.right(true);
+            mailSender.send(montarEmailDeRecuperacaoSenha(appUrl, token, usuario));            
         } catch (Exception e) {
             return Either.left(e);
         }
+        
+        return Either.right(1);
     }
 
     /**
@@ -43,12 +46,14 @@ public class EmailServiceImpl implements EmailService {
      * @return
      * @throws MessagingException
      */
-    private MimeMessage montarEmailDeRecuperacaoSenha(final String contextPath, final String token, final Usuario user)
-            throws MessagingException {
+    private MimeMessage montarEmailDeRecuperacaoSenha(
+            final String contextPath, 
+            final String token, 
+            final Usuario user) throws MessagingException {
         
         final String url = contextPath + "/user/change-password?email=" + user.getNomeUsuario() + "&token=" + token;
 
-        String dataHora = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss")
+        final String dataHora = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss")
                 .format(Calendar.getInstance().getTime())
                 .toString();
 

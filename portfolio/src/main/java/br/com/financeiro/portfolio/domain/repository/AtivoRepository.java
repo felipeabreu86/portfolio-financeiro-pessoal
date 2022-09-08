@@ -9,6 +9,6 @@ public interface AtivoRepository {
 
     List<Ativo> obterTodosAtivos();
 
-    Optional<Ativo> salvar(Ativo ativo);
+    Optional<Ativo> salvar(final Ativo ativo);
 
 }

@@ -7,10 +7,10 @@ import io.vavr.control.Either;
 
 public interface PasswordResetTokenRepository {
 
-    Either<Exception, PasswordResetToken> salvar(PasswordResetToken passwordResetToken);
+    Either<Exception, PasswordResetToken> salvar(final PasswordResetToken passwordResetToken);
 
-    Either<Exception, PasswordResetToken> obterPasswordResetTokenPelo(String token);
+    Either<Exception, PasswordResetToken> obterPasswordResetTokenPelo(final String token);
 
-    Either<Exception, Integer> apagarTokensExpiradosDesde(Date now);
+    Either<Exception, Integer> apagarTokensExpiradosDesde(final Date now);
 
 }

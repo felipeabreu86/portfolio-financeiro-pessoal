@@ -12,10 +12,10 @@ import br.com.financeiro.portfolio.domain.entity.Usuario;
 @Repository
 public interface UsuarioDao extends JpaRepository<Usuario, Long> {
 
-    Optional<Usuario> findByNomeUsuario(String nomeUsuario);
+    Optional<Usuario> findByNomeUsuario(final String nomeUsuario);
 
     @Modifying
     @Query(value = "delete u, p from users u inner join password_reset_token p on u.username = p.username where u.username = ?1", nativeQuery = true)
-    Optional<Integer> deletar(String nomeUsuario);
+    Optional<Integer> deletar(final String nomeUsuario);
 
 }

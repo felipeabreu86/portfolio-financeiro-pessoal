@@ -14,7 +14,7 @@ public class HomeController {
     }
 
     @GetMapping(value = "/login")
-    public String login(Principal principal) {
+    public String login(final Principal principal) {
         boolean isUserLoggedIn = principal != null;
 
         return isUserLoggedIn 

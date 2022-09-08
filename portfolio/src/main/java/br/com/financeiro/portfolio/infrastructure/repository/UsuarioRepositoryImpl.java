@@ -19,7 +19,7 @@ public class UsuarioRepositoryImpl implements UsuarioRepository {
     private UsuarioDao usuarioDao;
 
     @Override
-    public Either<Exception, Usuario> obterUsuarioPelo(String nomeUsuario) {
+    public Either<Exception, Usuario> obterUsuarioPelo(final String nomeUsuario) {
 
         try {
             return Either.right(usuarioDao.findByNomeUsuario(nomeUsuario).get());
@@ -31,7 +31,7 @@ public class UsuarioRepositoryImpl implements UsuarioRepository {
     }
 
     @Override
-    public Either<Exception, Usuario> salvarOuAtualizar(Usuario usuario) {
+    public Either<Exception, Usuario> salvarOuAtualizar(final Usuario usuario) {
 
         try {
             return Either.right(usuarioDao.save(usuario));
@@ -41,7 +41,7 @@ public class UsuarioRepositoryImpl implements UsuarioRepository {
     }
 
     @Override
-    public Either<Exception, Integer> deletar(Usuario usuario) {
+    public Either<Exception, Integer> deletar(final Usuario usuario) {
 
         try {
             Optional<Integer> result = usuarioDao.deletar(usuario.getNomeUsuario());

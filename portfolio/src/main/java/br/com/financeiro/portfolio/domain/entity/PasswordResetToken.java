@@ -142,8 +142,8 @@ public class PasswordResetToken {
     public String toString() {
         final StringBuilder builder = new StringBuilder();
         builder
-            .append("Token [String=").append(token).append("]")
-            .append("[Expires").append(expiryDate).append("]");
+            .append("Token [string=").append(token).append("]")
+            .append("[expires=").append(expiryDate).append("]");
         return builder.toString();
     }
 

@@ -7,6 +7,6 @@ import io.vavr.control.Either;
 
 public interface EmailService {
 
-    Either<Exception, Boolean> enviarEmailRecuperacaoSenha(final HttpServletRequest request, final String token, final Usuario usuario);
+    Either<Exception, Integer> enviarEmailRecuperacaoSenha(final HttpServletRequest request, final String token, final Usuario usuario);
 
 }
