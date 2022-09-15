@@ -132,4 +132,14 @@ public class UsuarioController {
         return view;
     }
     
+    @GetMapping(value = "/delete-user")
+    public String deletarUsuario() {
+        Either<Exception, Usuario> usuarioOpt = usuarioService.obterUsuarioPelo("admin@email.com");
+        Usuario usuario = usuarioOpt.get();
+        
+        usuarioService.deletar(usuario);
+        
+        return "redirect:/login";
+    }
+    
 }

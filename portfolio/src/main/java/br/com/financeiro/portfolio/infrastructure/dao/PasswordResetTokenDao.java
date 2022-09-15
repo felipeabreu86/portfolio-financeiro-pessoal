@@ -13,10 +13,14 @@ import br.com.financeiro.portfolio.domain.entity.PasswordResetToken;
 @Repository
 public interface PasswordResetTokenDao extends JpaRepository<PasswordResetToken, Long> {
 
-    Optional<PasswordResetToken> findByToken(String token);
+    Optional<PasswordResetToken> findByToken(final String token);
 
     @Modifying
     @Query("delete from PasswordResetToken t where t.expiryDate <= ?1")
     Optional<Integer> deleteAllExpiredSince(final Date now);
+
+    @Modifying
+    @Query("delete from PasswordResetToken t where t.user.id = ?1")
+    Optional<Integer> deleteTokensBy(final Long userId);
 
 }

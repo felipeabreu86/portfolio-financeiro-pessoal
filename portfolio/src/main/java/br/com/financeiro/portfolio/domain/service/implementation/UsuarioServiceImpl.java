@@ -88,7 +88,9 @@ public class UsuarioServiceImpl implements UsuarioService {
         if (usuario == null || !usuario.isValido()) {
             return Either.left(new IllegalArgumentException("Dados inválidos!"));
         }
-
+        
+        passwordResetTokenRepository.deletarTokensPor(usuario.getId());
+        
         return usuarioRepository.deletar(usuario);
     }
     
@@ -125,7 +127,8 @@ public class UsuarioServiceImpl implements UsuarioService {
     public Either<Exception, PasswordResetToken> criarTokenDeRecuperacaoDeSenha(final Usuario usuario) {
 
         final Date dataAtual = Calendar.getInstance().getTime();
-        passwordResetTokenRepository.apagarTokensExpiradosDesde(dataAtual);
+        
+        passwordResetTokenRepository.deletarTokensExpiradosDesde(dataAtual);
 
         return passwordResetTokenRepository.salvar(new PasswordResetToken(UUID.randomUUID().toString(), usuario));
     }

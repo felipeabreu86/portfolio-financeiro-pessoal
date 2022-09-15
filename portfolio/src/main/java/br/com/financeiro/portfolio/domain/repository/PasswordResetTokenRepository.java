@@ -11,6 +11,8 @@ public interface PasswordResetTokenRepository {
 
     Either<Exception, PasswordResetToken> obterPasswordResetTokenPelo(final String token);
 
-    Either<Exception, Integer> apagarTokensExpiradosDesde(final Date now);
+    Either<Exception, Integer> deletarTokensExpiradosDesde(final Date now);
+
+    Either<Exception, Integer> deletarTokensPor(final Long userId);
 
 }

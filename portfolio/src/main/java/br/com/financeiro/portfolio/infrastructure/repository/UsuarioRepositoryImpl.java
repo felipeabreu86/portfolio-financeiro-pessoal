@@ -1,7 +1,6 @@
 package br.com.financeiro.portfolio.infrastructure.repository;
 
 import java.util.NoSuchElementException;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -44,8 +43,8 @@ public class UsuarioRepositoryImpl implements UsuarioRepository {
     public Either<Exception, Integer> deletar(final Usuario usuario) {
 
         try {
-            Optional<Integer> result = usuarioDao.deletar(usuario.getNomeUsuario());
-            return Either.right(result.isPresent() ? result.get() : 0);
+            usuarioDao.delete(usuario);            
+            return Either.right(1);
         } catch (Exception e) {
             return Either.left(e);
         }

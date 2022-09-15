@@ -11,15 +11,15 @@ import br.com.financeiro.portfolio.domain.entity.Usuario;
 public class UsuarioDto {
 
     @NotBlank(message = "O e-mail é obrigatório.")
-    @Size(max = 50, message="O e-mail deve conter até 50 dígitos.")
+    @Size(max = 50, message = "O e-mail deve conter até 50 dígitos.")
     private String nomeUsuario;
 
     @NotBlank(message = "O nome é obrigatório.")
-    @Size(max = 80, message="O nome deve conter até 80 dígitos.")
+    @Size(max = 80, message = "O nome deve conter até 80 dígitos.")
     private String nome;
 
     @NotBlank(message = "O sobrenome é obrigatório.")
-    @Size(max = 80, message="O sobrenome deve conter até 80 dígitos.")
+    @Size(max = 80, message = "O sobrenome deve conter até 80 dígitos.")
     private String sobrenome;
 
     @ValidPassword
@@ -72,13 +72,7 @@ public class UsuarioDto {
     // Métodos
 
     public Usuario toUsuario() {
-        Usuario usuario = new Usuario();
-        usuario.setNome(this.nome);
-        usuario.setNomeUsuario(this.nomeUsuario);
-        usuario.setSenha(this.senha);
-        usuario.setSobrenome(this.sobrenome);
-        usuario.setStatus(true);
-        return usuario;
+        return new Usuario(this.nomeUsuario, this.nome, this.sobrenome, this.senha, true);
     }
 
 }

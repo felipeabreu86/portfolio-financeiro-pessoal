@@ -38,10 +38,21 @@ public class PasswordResetTokenRepositoryImpl implements PasswordResetTokenRepos
     }
     
     @Override
-    public Either<Exception, Integer> apagarTokensExpiradosDesde(final Date now) {
+    public Either<Exception, Integer> deletarTokensExpiradosDesde(final Date now) {
 
         try {
             Optional<Integer> result = passwordResetTokenDao.deleteAllExpiredSince(now);
+            return Either.right(result.isPresent() ? result.get() : 0);
+        } catch (Exception e) {
+            return Either.left(e);
+        }
+    }
+    
+    @Override
+    public Either<Exception, Integer> deletarTokensPor(final Long userId) {
+
+        try {
+            Optional<Integer> result = passwordResetTokenDao.deleteTokensBy(userId);
             return Either.right(result.isPresent() ? result.get() : 0);
         } catch (Exception e) {
             return Either.left(e);
