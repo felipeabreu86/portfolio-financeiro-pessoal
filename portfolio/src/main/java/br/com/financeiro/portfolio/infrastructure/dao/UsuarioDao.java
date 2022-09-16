@@ -10,6 +10,6 @@ import br.com.financeiro.portfolio.domain.entity.Usuario;
 @Repository
 public interface UsuarioDao extends JpaRepository<Usuario, Long> {
 
-    Optional<Usuario> findByNomeUsuario(final String nomeUsuario);
+    Optional<Usuario> findByEmail(final String emailUsuario);
 
 }

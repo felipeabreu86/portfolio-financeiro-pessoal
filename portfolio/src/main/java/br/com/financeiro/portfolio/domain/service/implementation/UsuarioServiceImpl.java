@@ -2,9 +2,9 @@ package br.com.financeiro.portfolio.domain.service.implementation;
 
 import java.util.Calendar;
 import java.util.Date;
-import java.util.UUID;
 
 import javax.transaction.Transactional;
+import javax.transaction.Transactional.TxType;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,8 +31,8 @@ public class UsuarioServiceImpl implements UsuarioService {
      * 
      */
     @Override
-    public Either<Exception, Usuario> obterUsuarioPelo(final String nomeUsuario) {
-        return usuarioRepository.obterUsuarioPelo(nomeUsuario);
+    public Either<Exception, Usuario> obterUsuarioPelo(final String emailUsuario) {
+        return usuarioRepository.obterUsuarioPelo(emailUsuario);
     }
 
     /**
@@ -48,7 +48,7 @@ public class UsuarioServiceImpl implements UsuarioService {
         }
 
         // Se o usuário já existir, não criar novo usuário e retornar exceção
-        if (obterUsuarioPelo(usuario.getNomeUsuario()).isRight()) {
+        if (obterUsuarioPelo(usuario.getEmail()).isRight()) {
             return Either.left(new UsuarioExistenteException("Conta já cadastrada."));
         }
 
@@ -68,7 +68,7 @@ public class UsuarioServiceImpl implements UsuarioService {
         }
 
         // Se o usuário não existir, não atualizar e retornar exceção
-        Either<Exception, Usuario> usuarioCadastrado = obterUsuarioPelo(usuario.getNomeUsuario());
+        Either<Exception, Usuario> usuarioCadastrado = obterUsuarioPelo(usuario.getEmail());
 
         if (usuarioCadastrado.isLeft()) {
             return Either.left(usuarioCadastrado.getLeft());
@@ -88,26 +88,24 @@ public class UsuarioServiceImpl implements UsuarioService {
         if (usuario == null || !usuario.isValido()) {
             return Either.left(new IllegalArgumentException("Dados inválidos!"));
         }
-        
-        passwordResetTokenRepository.deletarTokensPor(usuario.getId());
-        
+                
         return usuarioRepository.deletar(usuario);
     }
     
     @Override
     @Transactional
     public Either<Exception, Usuario> atualizarSenhaDoUsuario(
-            final String emailCadastrado, 
+            final String emailUsuario, 
             final String novaSenha,
             final String token) {
 
-        Either<Exception, PasswordResetToken> tokenResult = validarTokenDeRecuperacaoDeSenha(emailCadastrado, token);
+        Either<Exception, PasswordResetToken> tokenResult = validarTokenDeRecuperacaoDeSenha(emailUsuario, token);
 
         if (tokenResult.isLeft()) {
             return Either.left(tokenResult.getLeft());
         }
 
-        Either<Exception, Usuario> usuarioResult = obterUsuarioPelo(emailCadastrado);
+        Either<Exception, Usuario> usuarioResult = obterUsuarioPelo(emailUsuario);
 
         if (usuarioResult.isLeft()) {
             return Either.left(usuarioResult.getLeft());
@@ -123,14 +121,18 @@ public class UsuarioServiceImpl implements UsuarioService {
      * 
      */
     @Override
-    @Transactional
+    @Transactional(value = TxType.REQUIRES_NEW)
     public Either<Exception, PasswordResetToken> criarTokenDeRecuperacaoDeSenha(final Usuario usuario) {
 
         final Date dataAtual = Calendar.getInstance().getTime();
         
         passwordResetTokenRepository.deletarTokensExpiradosDesde(dataAtual);
-
-        return passwordResetTokenRepository.salvar(new PasswordResetToken(UUID.randomUUID().toString(), usuario));
+        
+        PasswordResetToken token = usuario.generateNewUserToken();        
+        
+        return usuarioRepository.salvarOuAtualizar(usuario).isRight() 
+                ? Either.right(token)
+                : Either.left(new Exception("Erro ao salvar o Token"));
     }
 
     /**
@@ -138,10 +140,10 @@ public class UsuarioServiceImpl implements UsuarioService {
      */
     @Override
     public Either<Exception, PasswordResetToken> validarTokenDeRecuperacaoDeSenha(
-            final String usuario,
+            final String emailUsuario,
             final String token) {
 
-        if (StringUtil.isNullOrEmpty(usuario) || StringUtil.isNullOrEmpty(token)) {
+        if (StringUtil.isNullOrEmpty(emailUsuario) || StringUtil.isNullOrEmpty(token)) {
             return Either.left(new IllegalArgumentException("Usuário ou Token inválidos."));
         }
 
@@ -156,7 +158,7 @@ public class UsuarioServiceImpl implements UsuarioService {
             return Either.left(new Exception("Token expirado."));
         }
 
-        if (!tokenResult.get().getUser().getNomeUsuario().equals(usuario)) {
+        if (!tokenResult.get().getUsuario().getEmail().equals(emailUsuario)) {
             return Either.left(new Exception("Token inválido."));
         }
 

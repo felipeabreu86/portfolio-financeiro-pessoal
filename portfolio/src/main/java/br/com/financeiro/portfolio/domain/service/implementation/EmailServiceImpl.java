@@ -51,7 +51,7 @@ public class EmailServiceImpl implements EmailService {
             final String token, 
             final Usuario user) throws MessagingException {
         
-        final String url = contextPath + "/user/change-password?email=" + user.getNomeUsuario() + "&token=" + token;
+        final String url = contextPath + "/user/change-password?email=" + user.getEmail() + "&token=" + token;
 
         final String dataHora = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss")
                 .format(Calendar.getInstance().getTime())
@@ -70,7 +70,7 @@ public class EmailServiceImpl implements EmailService {
         MimeMessage mimeMessage = mailSender.createMimeMessage();
         mimeMessage.setSubject("[Portfólio Financeiro] Recuperação de Senha");
         MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "utf-8");
-        helper.setTo(user.getNomeUsuario());
+        helper.setTo(user.getEmail());
         helper.setText(bodyMessage, true);
 
         return mimeMessage;

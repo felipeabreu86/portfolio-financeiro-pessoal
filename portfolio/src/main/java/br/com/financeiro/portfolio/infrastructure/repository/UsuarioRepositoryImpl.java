@@ -18,10 +18,10 @@ public class UsuarioRepositoryImpl implements UsuarioRepository {
     private UsuarioDao usuarioDao;
 
     @Override
-    public Either<Exception, Usuario> obterUsuarioPelo(final String nomeUsuario) {
+    public Either<Exception, Usuario> obterUsuarioPelo(final String emailUsuario) {
 
         try {
-            return Either.right(usuarioDao.findByNomeUsuario(nomeUsuario).get());
+            return Either.right(usuarioDao.findByEmail(emailUsuario).get());
         } catch (NoSuchElementException e) {
             return Either.left(new UsuarioNaoEncontradoException("Usuário não encontrado", e));
         } catch (Exception e) {

@@ -30,7 +30,7 @@ public class Authorities {
     private Usuario usuario;
 
     @Column(name = "username", unique = true, length = 50)
-    private String username;
+    private String email;
 
     @Column(name = "authority", length = 50)
     @Enumerated(EnumType.STRING)
@@ -46,7 +46,7 @@ public class Authorities {
     public Authorities(Usuario usuario) {
         this();
         this.usuario = Objects.requireNonNull(usuario);
-        this.username = usuario.getNomeUsuario();
+        this.email = usuario.getEmail();
     }
 
     // Getters e Setters
@@ -64,23 +64,23 @@ public class Authorities {
         this.authority = authority;
     }
 
-    public String getUsername() {
-        return username;
+    public String getEmail() {
+        return email;
     }
 
-    public void setUsername(String username) {
-        if (usuario == null || !usuario.getNomeUsuario().equals(username)) {
+    public void setEmail(String email) {
+        if (usuario == null || !usuario.getEmail().equals(email)) {
             throw new IllegalArgumentException(
-                    "O 'username' precisa ser idêntico ao do usuário mapeado para Authorities.");
+                    "O 'e-mail' precisa ser idêntico ao do usuário mapeado para Authorities.");
         }
-        this.username = username;
+        this.email = email;
     }
 
     // Métodos
 
     @Override
     public int hashCode() {
-        return Objects.hash(authority, id, username, usuario);
+        return Objects.hash(authority, id, email, usuario);
     }
 
     @Override
@@ -94,7 +94,7 @@ public class Authorities {
         Authorities other = (Authorities) obj;
         return authority == other.authority &&
                Objects.equals(id, other.id) &&
-               Objects.equals(username, other.username) &&
+               Objects.equals(email, other.email) &&
                Objects.equals(usuario, other.usuario);
     }
     
@@ -102,7 +102,7 @@ public class Authorities {
     public String toString() {
         final StringBuilder builder = new StringBuilder();
         builder
-            .append("Authorities [e-mail=").append(username).append("]")
+            .append("Authorities [e-mail=").append(email).append("]")
             .append("[authority=").append(authority.toString()).append("]");
         return builder.toString();
     }

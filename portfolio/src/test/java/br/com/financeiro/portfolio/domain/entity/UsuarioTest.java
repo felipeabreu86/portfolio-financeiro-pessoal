@@ -24,13 +24,13 @@ public class UsuarioTest {
 
         // Act
         usuario.setNome("nome");
-        usuario.setNomeUsuario("usuario");
+        usuario.setEmail("usuario");
         usuario.setSenha("S3nh@S3nh@");
         usuario.setSobrenome("sobrenome");
         usuario.setStatus(false);
 
         // Assert
-        assertEquals("usuario", usuario.getNomeUsuario());
+        assertEquals("usuario", usuario.getEmail());
         assertEquals("nome", usuario.getNome());
         assertTrue(encoder.matches("S3nh@S3nh@", usuario.getSenha()));
         assertEquals("sobrenome", usuario.getSobrenome());

@@ -6,7 +6,7 @@ import io.vavr.control.Either;
 
 public interface UsuarioService {
 
-    Either<Exception, Usuario> obterUsuarioPelo(final String nomeUsuario);
+    Either<Exception, Usuario> obterUsuarioPelo(final String emailUsuario);
 
     Either<Exception, Usuario> criarNovo(final Usuario usuario);
 
@@ -14,10 +14,10 @@ public interface UsuarioService {
 
     Either<Exception, Integer> deletar(final Usuario usuario);
 
-    Either<Exception, Usuario> atualizarSenhaDoUsuario(final String emailCadastrado, final String novaSenha, final String token);
+    Either<Exception, Usuario> atualizarSenhaDoUsuario(final String emailUsuario, final String novaSenha, final String token);
 
     Either<Exception, PasswordResetToken> criarTokenDeRecuperacaoDeSenha(final Usuario usuario);
 
-    Either<Exception, PasswordResetToken> validarTokenDeRecuperacaoDeSenha(final String usuario, final String token);
+    Either<Exception, PasswordResetToken> validarTokenDeRecuperacaoDeSenha(final String emailUsuario, final String token);
 
 }

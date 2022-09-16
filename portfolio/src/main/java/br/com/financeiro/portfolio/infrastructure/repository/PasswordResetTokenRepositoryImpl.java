@@ -18,41 +18,18 @@ public class PasswordResetTokenRepositoryImpl implements PasswordResetTokenRepos
     private PasswordResetTokenDao passwordResetTokenDao;
 
     @Override
-    public Either<Exception, PasswordResetToken> salvar(final PasswordResetToken passwordResetToken) {
-
-        try {
-            return Either.right(passwordResetTokenDao.save(passwordResetToken));
-        } catch (Exception e) {
-            return Either.left(e);
-        }
-    }
-
-    @Override
     public Either<Exception, PasswordResetToken> obterPasswordResetTokenPelo(final String token) {
 
         Optional<PasswordResetToken> opt = passwordResetTokenDao.findByToken(token);
 
-        return opt.isPresent() 
-                ? Either.right(opt.get()) 
-                : Either.left(new Exception("Token não encontrado."));
+        return opt.isPresent() ? Either.right(opt.get()) : Either.left(new Exception("Token não encontrado."));
     }
-    
+
     @Override
     public Either<Exception, Integer> deletarTokensExpiradosDesde(final Date now) {
 
         try {
             Optional<Integer> result = passwordResetTokenDao.deleteAllExpiredSince(now);
-            return Either.right(result.isPresent() ? result.get() : 0);
-        } catch (Exception e) {
-            return Either.left(e);
-        }
-    }
-    
-    @Override
-    public Either<Exception, Integer> deletarTokensPor(final Long userId) {
-
-        try {
-            Optional<Integer> result = passwordResetTokenDao.deleteTokensBy(userId);
             return Either.right(result.isPresent() ? result.get() : 0);
         } catch (Exception e) {
             return Either.left(e);

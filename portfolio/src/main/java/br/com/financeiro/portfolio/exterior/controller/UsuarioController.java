@@ -134,7 +134,7 @@ public class UsuarioController {
     
     @GetMapping(value = "/delete-user")
     public String deletarUsuario() {
-        Either<Exception, Usuario> usuarioOpt = usuarioService.obterUsuarioPelo("admin@email.com");
+        Either<Exception, Usuario> usuarioOpt = usuarioService.obterUsuarioPelo("felipeabreu.rj@gmail.com");
         Usuario usuario = usuarioOpt.get();
         
         usuarioService.deletar(usuario);

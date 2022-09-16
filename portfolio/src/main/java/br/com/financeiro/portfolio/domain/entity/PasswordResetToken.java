@@ -4,12 +4,11 @@ import java.util.Calendar;
 import java.util.Date;
 
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class PasswordResetToken {
@@ -23,11 +22,11 @@ public class PasswordResetToken {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    private String token;
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private Usuario usuario;
 
-    @OneToOne(targetEntity = Usuario.class, fetch = FetchType.EAGER)
-    @JoinColumn(nullable = false, name = "user_id")
-    private Usuario user;
+    private String token;
 
     private Date expiryDate;
 
@@ -37,15 +36,11 @@ public class PasswordResetToken {
         super();
     }
 
-    public PasswordResetToken(final String token) {
+    public PasswordResetToken(final String token, Usuario usuario) {
         this();
         this.token = token;
         this.expiryDate = calculateExpiryDate(EXPIRATION);
-    }
-
-    public PasswordResetToken(final String token, final Usuario user) {
-        this(token);
-        this.user = user;
+        this.usuario = usuario;
     }
 
     // Getters e Setters
@@ -62,20 +57,16 @@ public class PasswordResetToken {
         this.token = token;
     }
 
-    public Usuario getUser() {
-        return user;
-    }
-
-    public void setUser(final Usuario user) {
-        this.user = user;
-    }
-
     public Date getExpiryDate() {
         return expiryDate;
     }
 
     public void setExpiryDate(final Date expiryDate) {
         this.expiryDate = expiryDate;
+    }
+    
+    public Usuario getUsuario() {
+        return usuario;
     }
 
     // Métodos
@@ -98,7 +89,7 @@ public class PasswordResetToken {
         int result = 1;
         result = prime * result + ((getExpiryDate() == null) ? 0 : getExpiryDate().hashCode());
         result = prime * result + ((getToken() == null) ? 0 : getToken().hashCode());
-        result = prime * result + ((getUser() == null) ? 0 : getUser().hashCode());
+        result = prime * result + ((usuario == null) ? 0 : usuario.hashCode());
         return result;
     }
 
@@ -128,11 +119,11 @@ public class PasswordResetToken {
         } else if (!getToken().equals(other.getToken())) {
             return false;
         }
-        if (getUser() == null) {
-            if (other.getUser() != null) {
+        if (usuario == null) {
+            if (other.usuario != null) {
                 return false;
             }
-        } else if (!getUser().equals(other.getUser())) {
+        } else if (!usuario.equals(other.usuario)) {
             return false;
         }
         return true;

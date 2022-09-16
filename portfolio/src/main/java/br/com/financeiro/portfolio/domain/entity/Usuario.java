@@ -1,6 +1,9 @@
 package br.com.financeiro.portfolio.domain.entity;
 
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
+import java.util.UUID;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -8,6 +11,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
@@ -26,7 +30,7 @@ public class Usuario {
     private Long id;
 
     @Column(name = "username", unique = true)
-    private String nomeUsuario;
+    private String email;
 
     @Column(name = "name")
     private String nome;
@@ -44,16 +48,21 @@ public class Usuario {
     @PrimaryKeyJoinColumn
     private Authorities authorities;
 
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
+    @PrimaryKeyJoinColumn
+    private Set<PasswordResetToken> tokens;
+
     // Construtores
 
     public Usuario() {
         super();
         this.authorities = new Authorities(this);
+        this.tokens = new HashSet<PasswordResetToken>();
     }
 
-    public Usuario(String nomeUsuario, String nome, String sobrenome, String senha, Boolean status) {
+    public Usuario(String email, String nome, String sobrenome, String senha, Boolean status) {
         this();
-        setNomeUsuario(nomeUsuario);
+        setEmail(email);
         setNome(nome);
         setSobrenome(sobrenome);
         setSenha(senha);
@@ -66,13 +75,13 @@ public class Usuario {
         return id;
     }
 
-    public String getNomeUsuario() {
-        return nomeUsuario;
+    public String getEmail() {
+        return email;
     }
 
-    public void setNomeUsuario(String nomeUsuario) {
-        this.nomeUsuario = nomeUsuario;
-        this.authorities.setUsername(nomeUsuario);
+    public void setEmail(String email) {
+        this.email = email;
+        this.authorities.setEmail(email);
     }
 
     public String getNome() {
@@ -110,7 +119,7 @@ public class Usuario {
     // Métodos
 
     public boolean isValido() {
-        return !StringUtil.isNullOrEmpty(this.nomeUsuario) && 
+        return !StringUtil.isNullOrEmpty(this.email) && 
                !StringUtil.isNullOrEmpty(this.nome) &&
                !StringUtil.isNullOrEmpty(this.sobrenome) &&
                !StringUtil.isNullOrEmpty(this.senha) &&
@@ -120,7 +129,7 @@ public class Usuario {
 
     @Override
     public int hashCode() {
-        return Objects.hash(this.nome, this.nomeUsuario, this.senha, this.sobrenome, this.status);
+        return Objects.hash(this.nome, this.email, this.senha, this.sobrenome, this.status);
     }
 
     @Override
@@ -133,7 +142,7 @@ public class Usuario {
             return false;
         Usuario other = (Usuario) obj;
         return Objects.equals(this.nome, other.nome) && 
-               Objects.equals(this.nomeUsuario, other.nomeUsuario) &&
+               Objects.equals(this.email, other.email) &&
                Objects.equals(this.sobrenome, other.sobrenome) &&
                Objects.equals(this.status, other.status);
     }
@@ -142,9 +151,15 @@ public class Usuario {
     public String toString() {
         final StringBuilder builder = new StringBuilder();
         builder
-            .append("Usuário [e-mail=").append(nomeUsuario).append("]")
+            .append("Usuário [e-mail=").append(email).append("]")
             .append("[status=").append(status ? "ativo" : "inativo").append("]");
         return builder.toString();
+    }
+
+    public PasswordResetToken generateNewUserToken() {
+        PasswordResetToken token = new PasswordResetToken(UUID.randomUUID().toString(), this);
+        tokens.add(token);
+        return token;
     }
 
 }
