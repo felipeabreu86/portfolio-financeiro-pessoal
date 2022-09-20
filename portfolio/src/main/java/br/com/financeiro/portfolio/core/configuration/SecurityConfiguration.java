@@ -17,7 +17,7 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-public class WebSecurityConfiguration implements HttpSessionListener {
+public class SecurityConfiguration implements HttpSessionListener {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -35,7 +35,7 @@ public class WebSecurityConfiguration implements HttpSessionListener {
                 "/user/delete-user" };
 
         return http
-                .authorizeRequests()
+                .httpBasic().and().authorizeRequests()
                 .antMatchers(authorizedResources)
                 .permitAll()
                 .anyRequest()

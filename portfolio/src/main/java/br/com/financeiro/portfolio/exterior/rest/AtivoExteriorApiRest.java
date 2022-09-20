@@ -3,11 +3,9 @@ package br.com.financeiro.portfolio.exterior.rest;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Optional;
-import java.util.Properties;
 
 import org.apache.commons.validator.routines.UrlValidator;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -30,11 +28,7 @@ public class AtivoExteriorApiRest {
     private WebClient webClient;
     
     @Autowired
-    private Environment appProperties;
-
-    @Autowired
-    @Qualifier("envProperties")
-    private Properties envProperties;
+    private Environment env;
 
     /**
      * 
@@ -55,7 +49,7 @@ public class AtivoExteriorApiRest {
                 ? periodo.get() 
                 : 1;
         
-        String exteriorApiUri = appProperties.getProperty("yahoo.api.uri");
+        String exteriorApiUri = env.getProperty("yahoo.api.uri");
         
         String[] schemes = { "https" };
         
@@ -64,8 +58,8 @@ public class AtivoExteriorApiRest {
                     .post()
                     .uri(exteriorApiUri)
                     .header("content-type", "application/x-www-form-urlencoded")
-                    .header("X-RapidAPI-Key", envProperties.getProperty("yahoo.api.key"))
-                    .header("X-RapidAPI-Host", appProperties.getProperty("yahoo.api.host"))
+                    .header("X-RapidAPI-Key", env.getProperty("yahoo.api.key"))
+                    .header("X-RapidAPI-Host", env.getProperty("yahoo.api.host"))
                     .bodyValue("symbol=" + codigoAtivo + "&period=" + periodoDias + "d")
                     .retrieve()
                     .bodyToMono(String.class)

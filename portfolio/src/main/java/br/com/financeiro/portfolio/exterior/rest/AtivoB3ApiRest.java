@@ -2,11 +2,10 @@ package br.com.financeiro.portfolio.exterior.rest;
 
 import java.math.BigDecimal;
 import java.util.Optional;
-import java.util.Properties;
 
 import org.apache.commons.validator.routines.UrlValidator;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -28,8 +27,7 @@ public class AtivoB3ApiRest {
     private WebClient webClient;
     
     @Autowired
-    @Qualifier("envProperties")
-    private Properties envProperties;
+    private Environment env;
 
     /**
      * 
@@ -50,7 +48,7 @@ public class AtivoB3ApiRest {
                 : 1;
         
         String b3ApiUri = String.format("%s/%s",
-                StringUtil.combineStringsToPath(envProperties.getProperty("b3.api.uri"), codigoAtivo.trim()), periodoDias);        
+                StringUtil.combineStringsToPath(env.getProperty("b3.api.uri"), codigoAtivo.trim()), periodoDias);        
         
         String[] schemes = { "https" };
         
