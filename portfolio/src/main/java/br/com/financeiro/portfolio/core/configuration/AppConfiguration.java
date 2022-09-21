@@ -12,12 +12,25 @@ import br.com.financeiro.portfolio.core.annotation.validator.password.SenhaLetra
 import br.com.financeiro.portfolio.core.annotation.validator.password.SenhaLetraMinusculaValidation;
 import br.com.financeiro.portfolio.core.annotation.validator.password.SenhaNulaOuVaziaValidation;
 import br.com.financeiro.portfolio.core.annotation.validator.password.SenhaTamanhoPermitido;
+import br.com.financeiro.portfolio.domain.service.AtivoService;
+import br.com.financeiro.portfolio.domain.service.implementation.AtivoB3ServiceImpl;
+import br.com.financeiro.portfolio.domain.service.implementation.AtivoExteriorServiceImpl;
 
 @Configuration
 public class AppConfiguration {
 
+    @Bean(name = "B3AtivoService")
+    public AtivoService B3AtivoService() {
+        return new AtivoB3ServiceImpl();
+    }
+
+    @Bean(name = "ExteriorAtivoService")
+    public AtivoService ExteriorAtivoService() {
+        return new AtivoExteriorServiceImpl();
+    }
+
     @Bean
-    public List<PasswordValidation> obterValidacoesDeSenha() {
+    public List<PasswordValidation> validacoesDeSenha() {
         List<PasswordValidation> validacoes = new ArrayList<PasswordValidation>();
         validacoes.add(new SenhaNulaOuVaziaValidation());
         validacoes.add(new SenhaTamanhoPermitido());

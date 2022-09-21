@@ -16,7 +16,7 @@ import reactor.netty.http.client.HttpClient;
 public class WebClientConfiguration {
 
     @Bean
-    public WebClient getWebClient() {        
+    public WebClient webClient() {        
         HttpClient httpClient = HttpClient
                 .create()
                 .responseTimeout(Duration.ofSeconds(30))        

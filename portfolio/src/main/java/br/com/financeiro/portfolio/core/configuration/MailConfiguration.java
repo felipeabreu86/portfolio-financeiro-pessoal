@@ -18,9 +18,9 @@ public class MailConfiguration {
     @Bean
     public JavaMailSender mailSender() {
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
-        mailSender.setHost("smtp.gmail.com");
-        mailSender.setPort(465);
-        mailSender.setUsername("portfoliofinanceiro.contato@gmail.com");
+        mailSender.setHost(env.getProperty("mail.host"));
+        mailSender.setPort(Integer.valueOf(env.getProperty("mail.port")));
+        mailSender.setUsername(env.getProperty("mail.from"));
         mailSender.setPassword(env.getProperty("mail.password"));
 
         Properties props = mailSender.getJavaMailProperties();

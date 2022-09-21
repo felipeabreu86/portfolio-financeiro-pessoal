@@ -31,11 +31,10 @@ public class SecurityConfiguration implements HttpSessionListener {
                 "/login/**",
                 "/user/forgot-password",
                 "/user/register-user",
-                "/user/change-password",
-                "/user/delete-user" };
+                "/user/change-password" };
 
         return http
-                .httpBasic().and().authorizeRequests()
+                .authorizeRequests()
                 .antMatchers(authorizedResources)
                 .permitAll()
                 .anyRequest()
